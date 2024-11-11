@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1451</width>
-    <height>860</height>
+    <height>872</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -739,10 +739,13 @@ background-color: rgb(255, 255, 255);</string>
                      <number>60</number>
                     </property>
                     <property name="topMargin">
-                     <number>40</number>
+                     <number>41</number>
                     </property>
                     <property name="rightMargin">
                      <number>60</number>
+                    </property>
+                    <property name="bottomMargin">
+                     <number>11</number>
                     </property>
                     <item alignment="Qt::AlignHCenter">
                      <widget class="QLabel" name="lab_photo">
@@ -788,6 +791,67 @@ background-color: rgb(255, 255, 255);</string>
                       <property name="indent">
                        <number>-1</number>
                       </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QFrame" name="frame_home_bn">
+                      <property name="minimumSize">
+                       <size>
+                        <width>0</width>
+                        <height>100</height>
+                       </size>
+                      </property>
+                      <property name="frameShape">
+                       <enum>QFrame::StyledPanel</enum>
+                      </property>
+                      <property name="frameShadow">
+                       <enum>QFrame::Raised</enum>
+                      </property>
+                      <layout class="QHBoxLayout" name="horizontalLayout_9">
+                       <item>
+                        <widget class="QPushButton" name="bn_load_photo">
+                         <property name="minimumSize">
+                          <size>
+                           <width>0</width>
+                           <height>50</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>250</width>
+                           <height>16777215</height>
+                          </size>
+                         </property>
+                         <property name="font">
+                          <font>
+                           <family>Inter</family>
+                           <pointsize>-1</pointsize>
+                          </font>
+                         </property>
+                         <property name="styleSheet">
+                          <string notr="true">QPushButton {
+	border: none;
+	background-color: rgb(46, 125, 50);
+	color: white;
+	padding: 8px 16px; 
+	border-radius: 15px;       
+    font-size: 14px; 
+	font-size: 20px;          
+    font-family: Inter;
+}
+QPushButton:hover {
+	background-color: rgb(129,199,132);
+}
+QPushButton:pressed {	
+	background-color: rgb(129,199,132);
+}</string>
+                         </property>
+                         <property name="text">
+                          <string>Wczytaj zdjęcie</string>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
                      </widget>
                     </item>
                    </layout>

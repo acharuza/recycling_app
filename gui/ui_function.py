@@ -19,14 +19,14 @@ class UIFunction(MainWindow):
             self.showMaximized()
             GLOBAL_STATE = 1
             self.ui.bn_max.setToolTip("Restore")
-            self.ui.bn_max.setIcon(QtGui.QIcon("icons/restore.png"))  # CHANGE THE MAXIMISE ICON TO RESTOR ICON
-            self.ui.frame_drag.hide()  # HIDE DRAG AS NOT NECESSERY
+            self.ui.bn_max.setIcon(QtGui.QIcon("icons/restore.png"))
+            self.ui.frame_drag.hide()
         else:
             GLOBAL_STATE = 0
             self.showNormal()
             self.resize(self.width() + 1, self.height() + 1)
             self.ui.bn_max.setToolTip("Maximize")
-            self.ui.bn_max.setIcon(QtGui.QIcon("icons/maximize.png"))  # CHANGE BACK TO MAXIMISE ICON
+            self.ui.bn_max.setIcon(QtGui.QIcon("icons/maximize.png"))
             self.ui.frame_drag.show()
 
     def returnStatus():
@@ -53,18 +53,15 @@ class UIFunction(MainWindow):
             self.ui.frame_min.hide()
             self.ui.frame_drag.hide()
 
-        # -----> MINIMIZE BUTTON FUNCTION
         self.ui.bn_min.clicked.connect(lambda: self.showMinimized())
 
-        # -----> MAXIMIZE/RESTORE BUTTON FUNCTION
         self.ui.bn_max.clicked.connect(lambda: UIFunction.maximize_restore(self))
 
-        # -----> CLOSE APPLICATION FUNCTION BUTTON
         self.ui.bn_close.clicked.connect(lambda: self.close())
 
     def stackPage(self):
         pass
-        ######### PAGE_HOME ############# BELOW DISPLAYS THE FUNCTION OF WIDGET, LABEL, PROGRESS BAR, E.T.C IN STACKEDWIDGET page_HOME
+        #changing text
         #self.ui.lab_home_desc.setText("Profile")
 
     def buttonPressed(self, buttonName):
@@ -107,6 +104,20 @@ class UIFunction(MainWindow):
         elif buttonName == 'bn_stats':
             self.ui.stackedWidget.setCurrentWidget(self.ui.page_stats)
             self.ui.bn_stats.setStyleSheet(active_button_style)
+
+    def loadPhoto(self):
+        # Otwórz okno dialogowe do wyboru pliku
+        file_path, _ = QFileDialog.getOpenFileName(self, "Wybierz zdjęcie", "", "Images (*.png *.jpg *.jpeg *.bmp)")
+
+        # Sprawdź, czy użytkownik wybrał plik
+        if file_path:
+            # Załaduj zdjęcie i wyświetl w QLabel (przykładowo QLabel o nazwie lab_photo)
+            pixmap = QPixmap(file_path)
+            self.ui.lab_photo.setPixmap(
+                pixmap.scaled(self.ui.lab_photo.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation))
+        else:
+            # Jeśli nie wybrano żadnego pliku, możesz pokazać komunikat
+            QMessageBox.information(self, "Brak pliku", "Nie wybrano żadnego pliku.")
 
 
 
