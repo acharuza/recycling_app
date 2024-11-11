@@ -3,8 +3,8 @@ from PyQt5 import uic, QtCore, QtGui
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import QPropertyAnimation
-from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton, QLabel, QWidget, QFrame, QFileDialog, QMessageBox
-
+from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton, QLabel, QWidget, QFrame, QFileDialog, QMessageBox, QVBoxLayout
+from PyQt5.QtGui import QFont
 from ui_function import *
 
 
@@ -48,6 +48,11 @@ class MainWindow(QMainWindow):
 
         self.ui.frame_appname.mouseMoveEvent = moveWindow
         self.ui.bn_load_photo.clicked.connect(lambda: UIFunction.loadPhoto(self))
+        self.ui.bn_new.clicked.connect(lambda: UIFunction.loadPhoto(self))
+        self.ui.bn_new_2.clicked.connect(lambda: UIFunction.loadPhoto(self))
+        self.ui.bn_analyze.clicked.connect(lambda: UIFunction.analyzePhoto(self))
+        self.ui.bn_save.clicked.connect(lambda: UIFunction.savePhoto(self))
+
 
     def mousePressEvent(self, event):
         self.dragPos = event.globalPos()

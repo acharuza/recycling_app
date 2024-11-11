@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1451</width>
-    <height>872</height>
+    <height>870</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -807,7 +807,7 @@ background-color: rgb(255, 255, 255);</string>
                       <widget class="QWidget" name="page_load">
                        <property name="maximumSize">
                         <size>
-                         <width>848</width>
+                         <width>1000</width>
                          <height>16777215</height>
                         </size>
                        </property>
@@ -897,50 +897,65 @@ QPushButton:pressed {
                        </layout>
                       </widget>
                       <widget class="QWidget" name="page_change_save">
-                       <widget class="QFrame" name="frame_bn_save">
-                        <property name="geometry">
-                         <rect>
-                          <x>0</x>
-                          <y>20</y>
-                          <width>848</width>
-                          <height>100</height>
-                         </rect>
-                        </property>
-                        <property name="minimumSize">
-                         <size>
-                          <width>848</width>
-                          <height>100</height>
-                         </size>
-                        </property>
-                        <property name="frameShape">
-                         <enum>QFrame::StyledPanel</enum>
-                        </property>
-                        <property name="frameShadow">
-                         <enum>QFrame::Raised</enum>
-                        </property>
-                        <layout class="QHBoxLayout" name="horizontalLayout_15">
-                         <item>
-                          <widget class="QPushButton" name="bn_new">
-                           <property name="minimumSize">
-                            <size>
-                             <width>0</width>
-                             <height>50</height>
-                            </size>
-                           </property>
-                           <property name="maximumSize">
-                            <size>
-                             <width>250</width>
-                             <height>16777215</height>
-                            </size>
-                           </property>
-                           <property name="font">
-                            <font>
-                             <family>Inter</family>
-                             <pointsize>-1</pointsize>
-                            </font>
-                           </property>
-                           <property name="styleSheet">
-                            <string notr="true">QPushButton {
+                       <property name="minimumSize">
+                        <size>
+                         <width>792</width>
+                         <height>0</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>792</width>
+                         <height>16777215</height>
+                        </size>
+                       </property>
+                       <layout class="QHBoxLayout" name="horizontalLayout_17">
+                        <item>
+                         <widget class="QFrame" name="frame_bn_save">
+                          <property name="minimumSize">
+                           <size>
+                            <width>500</width>
+                            <height>100</height>
+                           </size>
+                          </property>
+                          <property name="maximumSize">
+                           <size>
+                            <width>800</width>
+                            <height>16777215</height>
+                           </size>
+                          </property>
+                          <property name="styleSheet">
+                           <string notr="true"/>
+                          </property>
+                          <property name="frameShape">
+                           <enum>QFrame::StyledPanel</enum>
+                          </property>
+                          <property name="frameShadow">
+                           <enum>QFrame::Raised</enum>
+                          </property>
+                          <layout class="QHBoxLayout" name="horizontalLayout_15">
+                           <item alignment="Qt::AlignTop">
+                            <widget class="QPushButton" name="bn_new">
+                             <property name="minimumSize">
+                              <size>
+                               <width>0</width>
+                               <height>50</height>
+                              </size>
+                             </property>
+                             <property name="maximumSize">
+                              <size>
+                               <width>250</width>
+                               <height>16777215</height>
+                              </size>
+                             </property>
+                             <property name="font">
+                              <font>
+                               <family>Inter</family>
+                               <pointsize>-1</pointsize>
+                              </font>
+                             </property>
+                             <property name="styleSheet">
+                              <string notr="true">QPushButton {
 	border: none;
 	background-color: rgb(46, 125, 50);
 	color: white;
@@ -956,34 +971,34 @@ QPushButton:hover {
 QPushButton:pressed {	
 	background-color: rgb(129,199,132);
 }</string>
-                           </property>
-                           <property name="text">
-                            <string>Nowe zdjęcie</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item>
-                          <widget class="QPushButton" name="bn_save">
-                           <property name="minimumSize">
-                            <size>
-                             <width>0</width>
-                             <height>50</height>
-                            </size>
-                           </property>
-                           <property name="maximumSize">
-                            <size>
-                             <width>250</width>
-                             <height>16777215</height>
-                            </size>
-                           </property>
-                           <property name="font">
-                            <font>
-                             <family>Inter</family>
-                             <pointsize>-1</pointsize>
-                            </font>
-                           </property>
-                           <property name="styleSheet">
-                            <string notr="true">QPushButton {
+                             </property>
+                             <property name="text">
+                              <string>Nowe zdjęcie</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item alignment="Qt::AlignTop">
+                            <widget class="QPushButton" name="bn_analyze">
+                             <property name="minimumSize">
+                              <size>
+                               <width>0</width>
+                               <height>50</height>
+                              </size>
+                             </property>
+                             <property name="maximumSize">
+                              <size>
+                               <width>250</width>
+                               <height>16777215</height>
+                              </size>
+                             </property>
+                             <property name="font">
+                              <font>
+                               <family>Inter</family>
+                               <pointsize>-1</pointsize>
+                              </font>
+                             </property>
+                             <property name="styleSheet">
+                              <string notr="true">QPushButton {
 	border: none;
 	background-color: rgb(46, 125, 50);
 	color: white;
@@ -999,14 +1014,133 @@ QPushButton:hover {
 QPushButton:pressed {	
 	background-color: rgb(129,199,132);
 }</string>
-                           </property>
-                           <property name="text">
-                            <string>Zapisz</string>
-                           </property>
-                          </widget>
-                         </item>
-                        </layout>
-                       </widget>
+                             </property>
+                             <property name="text">
+                              <string>Analizuj</string>
+                             </property>
+                            </widget>
+                           </item>
+                          </layout>
+                         </widget>
+                        </item>
+                       </layout>
+                      </widget>
+                      <widget class="QWidget" name="page_save">
+                       <layout class="QHBoxLayout" name="horizontalLayout_20">
+                        <item>
+                         <widget class="QFrame" name="frame_save">
+                          <property name="minimumSize">
+                           <size>
+                            <width>500</width>
+                            <height>100</height>
+                           </size>
+                          </property>
+                          <property name="maximumSize">
+                           <size>
+                            <width>800</width>
+                            <height>16777215</height>
+                           </size>
+                          </property>
+                          <property name="styleSheet">
+                           <string notr="true"/>
+                          </property>
+                          <property name="frameShape">
+                           <enum>QFrame::StyledPanel</enum>
+                          </property>
+                          <property name="frameShadow">
+                           <enum>QFrame::Raised</enum>
+                          </property>
+                          <layout class="QHBoxLayout" name="horizontalLayout_18">
+                           <item alignment="Qt::AlignTop">
+                            <widget class="QPushButton" name="bn_new_2">
+                             <property name="minimumSize">
+                              <size>
+                               <width>0</width>
+                               <height>50</height>
+                              </size>
+                             </property>
+                             <property name="maximumSize">
+                              <size>
+                               <width>250</width>
+                               <height>16777215</height>
+                              </size>
+                             </property>
+                             <property name="font">
+                              <font>
+                               <family>Inter</family>
+                               <pointsize>-1</pointsize>
+                              </font>
+                             </property>
+                             <property name="styleSheet">
+                              <string notr="true">QPushButton {
+	border: none;
+	background-color: rgb(46, 125, 50);
+	color: white;
+	padding: 8px 16px; 
+	border-radius: 15px;       
+    font-size: 14px; 
+	font-size: 20px;          
+    font-family: Inter;
+}
+QPushButton:hover {
+	background-color: rgb(129,199,132);
+}
+QPushButton:pressed {	
+	background-color: rgb(129,199,132);
+}</string>
+                             </property>
+                             <property name="text">
+                              <string>Nowe zdjęcie</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item alignment="Qt::AlignTop">
+                            <widget class="QPushButton" name="bn_save">
+                             <property name="minimumSize">
+                              <size>
+                               <width>0</width>
+                               <height>50</height>
+                              </size>
+                             </property>
+                             <property name="maximumSize">
+                              <size>
+                               <width>250</width>
+                               <height>16777215</height>
+                              </size>
+                             </property>
+                             <property name="font">
+                              <font>
+                               <family>Inter</family>
+                               <pointsize>-1</pointsize>
+                              </font>
+                             </property>
+                             <property name="styleSheet">
+                              <string notr="true">QPushButton {
+	border: none;
+	background-color: rgb(46, 125, 50);
+	color: white;
+	padding: 8px 16px; 
+	border-radius: 15px;       
+    font-size: 14px; 
+	font-size: 20px;          
+    font-family: Inter;
+}
+QPushButton:hover {
+	background-color: rgb(129,199,132);
+}
+QPushButton:pressed {	
+	background-color: rgb(129,199,132);
+}</string>
+                             </property>
+                             <property name="text">
+                              <string>Zapisz</string>
+                             </property>
+                            </widget>
+                           </item>
+                          </layout>
+                         </widget>
+                        </item>
+                       </layout>
                       </widget>
                      </widget>
                     </item>
@@ -1096,7 +1230,7 @@ QPushButton:pressed {
 }</string>
                       </property>
                       <property name="text">
-                       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Opis&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                       </property>
                       <property name="alignment">
                        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -1127,7 +1261,7 @@ QPushButton:pressed {
 </string>
                       </property>
                       <property name="text">
-                       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Kliknij w przycisk po lewej, &lt;/p&gt;&lt;p&gt;aby dodać zdjęcie&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:16pt;&quot;&gt;Kliknij w przycisk &lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:16pt;&quot;&gt;&amp;quot;Wczytaj zdjęcie&amp;quot;, &lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:16pt;&quot;&gt;aby dodać obraz &lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:16pt;&quot;&gt;do analizy.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                       </property>
                       <property name="alignment">
                        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>

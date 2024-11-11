@@ -1,3 +1,5 @@
+
+
 from main import *
 
 GLOBAL_STATE = 0 #checking if the window is full screen or not
@@ -116,6 +118,56 @@ class UIFunction(MainWindow):
 
         else:
             QMessageBox.information(self, "Brak pliku", "Nie wybrano żadnego pliku.")
+
+
+    def analyzePhoto(self):
+        # TODO: ogarnąć tekst do każdego rodzaju, strukturę tej funkcji, css itp, reset opisu po wczytaniu nowego zdjęcia
+        file_path = "icons/bin_blue.png"
+
+        if file_path:
+            pixmap = QPixmap(file_path)
+
+            if not pixmap.isNull():
+
+                scaled_pixmap = pixmap.scaled(pixmap.width()*2, pixmap.height()*2, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+
+                layout = QVBoxLayout()
+
+                text_label = QLabel("Analizowany odpad został najprawdopodniej wykonany z papieru i powinien zostać wrzucony do niebieskiego kosza.")
+                text_label.setWordWrap(True)
+                text_label.setAlignment(Qt.AlignCenter)
+                font = QFont()
+                font.setPointSize(16)
+                text_label.setFont(font)
+
+
+                image_label = QLabel()
+                image_label.setPixmap(scaled_pixmap)
+                image_label.setAlignment(Qt.AlignCenter)
+
+                self.ui.lab_home_hed.setText("Opis")
+                self.ui.lab_home_hed.setAlignment(Qt.AlignCenter)
+                self.ui.lab_home_hed.setStyleSheet("color: white; "
+                                                   "border-top-left-radius: "
+                                                   "25%;border-top-right-radius: "
+                                                   "25%;background-color: "
+                                                   "rgb(46, 125, 50);")
+
+                layout.addWidget(text_label)
+                layout.addWidget(image_label)
+
+                widget = QWidget(self)
+                widget.setLayout(layout)
+
+                self.lab_home_desc.setLayout(layout)
+                self.ui.stackedWidget_2.setCurrentWidget(self.ui.page_save)
+            else:
+                QMessageBox.warning(self, "Błąd", "Nie udało się załadować obrazu.")
+
+    def savePhoto(self):
+        print('save')
+
+
 
 
 
