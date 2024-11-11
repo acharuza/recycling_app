@@ -106,17 +106,15 @@ class UIFunction(MainWindow):
             self.ui.bn_stats.setStyleSheet(active_button_style)
 
     def loadPhoto(self):
-        # Otwórz okno dialogowe do wyboru pliku
         file_path, _ = QFileDialog.getOpenFileName(self, "Wybierz zdjęcie", "", "Images (*.png *.jpg *.jpeg *.bmp)")
 
-        # Sprawdź, czy użytkownik wybrał plik
         if file_path:
-            # Załaduj zdjęcie i wyświetl w QLabel (przykładowo QLabel o nazwie lab_photo)
             pixmap = QPixmap(file_path)
             self.ui.lab_photo.setPixmap(
                 pixmap.scaled(self.ui.lab_photo.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation))
+            self.ui.stackedWidget_2.setCurrentWidget(self.ui.page_change_save)
+
         else:
-            # Jeśli nie wybrano żadnego pliku, możesz pokazać komunikat
             QMessageBox.information(self, "Brak pliku", "Nie wybrano żadnego pliku.")
 
 
