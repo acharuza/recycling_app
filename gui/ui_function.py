@@ -114,58 +114,61 @@ class UIFunction(MainWindow):
             pixmap = QPixmap(file_path)
             self.ui.lab_photo.setPixmap(
                 pixmap.scaled(self.ui.lab_photo.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation))
+            self.selected_file_path = file_path
+            self.ui.lab_home_hed.setText("")
+            self.ui.lab_desc_text.setText("")
+            self.ui.lab_desc_photo.setPixmap(QPixmap())
             self.ui.stackedWidget_2.setCurrentWidget(self.ui.page_change_save)
 
         else:
             QMessageBox.information(self, "Brak pliku", "Nie wybrano żadnego pliku.")
 
-
     def analyzePhoto(self):
-        # TODO: ogarnąć tekst do każdego rodzaju, strukturę tej funkcji, css itp, reset opisu po wczytaniu nowego zdjęcia
         file_path = "icons/bin_blue.png"
+
+        self.ui.lab_home_hed.setText("Opis")
 
         if file_path:
             pixmap = QPixmap(file_path)
 
             if not pixmap.isNull():
+                scaled_pixmap = pixmap.scaled(pixmap.width() * 2, pixmap.height() * 2, Qt.KeepAspectRatio,
+                                              Qt.SmoothTransformation)
 
-                scaled_pixmap = pixmap.scaled(pixmap.width()*2, pixmap.height()*2, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+                self.ui.lab_desc_photo.setPixmap(scaled_pixmap)
+                self.ui.lab_desc_photo.setAlignment(Qt.AlignCenter)
 
-                layout = QVBoxLayout()
-
-                text_label = QLabel("Analizowany odpad został najprawdopodniej wykonany z papieru i powinien zostać wrzucony do niebieskiego kosza.")
-                text_label.setWordWrap(True)
-                text_label.setAlignment(Qt.AlignCenter)
-                font = QFont()
-                font.setPointSize(16)
-                text_label.setFont(font)
-
-
-                image_label = QLabel()
-                image_label.setPixmap(scaled_pixmap)
-                image_label.setAlignment(Qt.AlignCenter)
+                text = "Analizowany odpad został najprawdopodobniej wykonany z papieru i powinien zostać wrzucony do niebieskiego kosza."
+                self.ui.lab_desc_text.setText(text)
+                self.ui.lab_desc_text.setWordWrap(True)
+                self.ui.lab_desc_text.setAlignment(Qt.AlignCenter)
 
                 self.ui.lab_home_hed.setText("Opis")
                 self.ui.lab_home_hed.setAlignment(Qt.AlignCenter)
                 self.ui.lab_home_hed.setStyleSheet("color: white; "
-                                                   "border-top-left-radius: "
-                                                   "25%;border-top-right-radius: "
-                                                   "25%;background-color: "
-                                                   "rgb(46, 125, 50);")
+                                                    "border-top-left-radius: 25%;"
+                                                    "border-top-right-radius: 25%;"
+                                                    "background-color: rgb(46, 125, 50);")
 
-                layout.addWidget(text_label)
-                layout.addWidget(image_label)
-
-                widget = QWidget(self)
-                widget.setLayout(layout)
-
-                self.lab_home_desc.setLayout(layout)
                 self.ui.stackedWidget_2.setCurrentWidget(self.ui.page_save)
             else:
                 QMessageBox.warning(self, "Błąd", "Nie udało się załadować obrazu.")
 
     def savePhoto(self):
-        print('save')
+        #saving data into JSON file
+        if hasattr(self, 'selected_file_path') and self.selected_file_path:
+            data = {self.selected_file_path: "papier"}
+            try:
+                with open("image_base.json", "w", encoding="utf-8") as json_file:
+                    json.dump(data, json_file, ensure_ascii=False, indent=4)
+                QMessageBox.information(self, "Sukces", "Dane zostały zapisane")
+            except Exception as e:
+                QMessageBox.critical(self, "Błąd zapisu", f"Nie udało się zapisać: {e}")
+        else:
+            QMessageBox.warning(self, "Brak danych", "Nie wybrano pliku do zapisania.")
+
+
+
 
 
 

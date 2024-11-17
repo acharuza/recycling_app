@@ -1,11 +1,13 @@
 import sys
 from PyQt5 import uic, QtCore, QtGui
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtGui import QPixmap, QLinearGradient, QColor, QPalette, QBrush
 from PyQt5.QtCore import QPropertyAnimation
 from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton, QLabel, QWidget, QFrame, QFileDialog, QMessageBox, QVBoxLayout
 from PyQt5.QtGui import QFont
 from ui_function import *
+import json
+import os
 
 
 class MainWindow(QMainWindow):
@@ -53,9 +55,12 @@ class MainWindow(QMainWindow):
         self.ui.bn_analyze.clicked.connect(lambda: UIFunction.analyzePhoto(self))
         self.ui.bn_save.clicked.connect(lambda: UIFunction.savePhoto(self))
 
+        
+
 
     def mousePressEvent(self, event):
         self.dragPos = event.globalPos()
+
 
 
 if __name__ == "__main__":
