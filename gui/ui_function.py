@@ -167,6 +167,23 @@ class UIFunction(MainWindow):
         else:
             QMessageBox.warning(self, "Brak danych", "Nie wybrano pliku do zapisania.")
 
+    def statsPage(self):
+        with open('image_base.json', 'r') as file:
+            data = json.load(file)
+        categories = list(data.values())
+        category_counts = Counter(categories)
+
+        most_common_categories = category_counts.most_common(3)
+
+        labels = [self.ui.lab_number1, self.ui.lab_number2, self.ui.lab_number3]
+
+        for i, (category, count) in enumerate(most_common_categories):
+            result_text = f"{i + 1}. {category} ({count} razy)"
+            labels[i].setText(result_text)
+
+        for i in range(len(most_common_categories), 3):
+            labels[i].setText("")
+
 
 
 

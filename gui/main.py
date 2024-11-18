@@ -6,6 +6,7 @@ from PyQt5.QtCore import QPropertyAnimation
 from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton, QLabel, QWidget, QFrame, QFileDialog, QMessageBox, QVBoxLayout
 from PyQt5.QtGui import QFont
 from ui_function import *
+from collections import Counter
 import json
 import os
 
@@ -26,9 +27,14 @@ class MainWindow(QMainWindow):
         #Initialize max, min, close of the title bar
         UIFunction.constantFunction(self)
 
+        UIFunction.stackPage(self)
+
         #Menu buttons
         self.ui.bn_home.clicked.connect(lambda: UIFunction.buttonPressed(self, 'bn_home'))
-        self.ui.bn_stats.clicked.connect(lambda: UIFunction.buttonPressed(self, 'bn_stats'))
+        self.ui.bn_stats.clicked.connect(lambda: (
+            UIFunction.buttonPressed(self, 'bn_stats'),
+            UIFunction.statsPage(self)
+        ))
 
         #Used for stacked widgets
         UIFunction.stackPage(self)

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1451</width>
-    <height>870</height>
+    <height>868</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -1302,61 +1302,84 @@ QPushButton:pressed {
                 <property name="styleSheet">
                  <string notr="true">background:rgb(255,255,255);</string>
                 </property>
-                <layout class="QVBoxLayout" name="verticalLayout_13">
-                 <property name="spacing">
-                  <number>5</number>
-                 </property>
-                 <property name="leftMargin">
-                  <number>5</number>
-                 </property>
-                 <property name="topMargin">
-                  <number>5</number>
-                 </property>
-                 <property name="rightMargin">
-                  <number>5</number>
-                 </property>
-                 <property name="bottomMargin">
-                  <number>5</number>
-                 </property>
+                <layout class="QHBoxLayout" name="horizontalLayout_21">
                  <item>
-                  <widget class="QFrame" name="frame_2">
+                  <widget class="QFrame" name="frame_stats_2">
                    <property name="frameShape">
                     <enum>QFrame::StyledPanel</enum>
                    </property>
                    <property name="frameShadow">
                     <enum>QFrame::Raised</enum>
                    </property>
-                   <layout class="QHBoxLayout" name="horizontalLayout_22">
+                   <layout class="QVBoxLayout" name="verticalLayout_6">
                     <item>
-                     <widget class="QFrame" name="frame_6">
-                      <property name="styleSheet">
-                       <string notr="true">background-color: rgb(200, 230, 201);</string>
-                      </property>
+                     <widget class="QFrame" name="frame_stats_numbers">
                       <property name="frameShape">
                        <enum>QFrame::StyledPanel</enum>
                       </property>
                       <property name="frameShadow">
                        <enum>QFrame::Raised</enum>
                       </property>
+                      <layout class="QHBoxLayout" name="horizontalLayout_22">
+                       <property name="spacing">
+                        <number>40</number>
+                       </property>
+                       <property name="leftMargin">
+                        <number>40</number>
+                       </property>
+                       <property name="topMargin">
+                        <number>40</number>
+                       </property>
+                       <property name="rightMargin">
+                        <number>40</number>
+                       </property>
+                       <property name="bottomMargin">
+                        <number>40</number>
+                       </property>
+                       <item>
+                        <widget class="QLabel" name="lab_number1">
+                         <property name="styleSheet">
+                          <string notr="true">background-color: rgb(200, 230, 201);
+border-radius: 25%;
+</string>
+                         </property>
+                         <property name="text">
+                          <string/>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QLabel" name="lab_number2">
+                         <property name="styleSheet">
+                          <string notr="true">background-color: rgb(200, 230, 201);
+border-radius: 25%;
+</string>
+                         </property>
+                         <property name="text">
+                          <string/>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QLabel" name="lab_number3">
+                         <property name="styleSheet">
+                          <string notr="true">background-color: rgb(200, 230, 201);
+border-radius: 25%;
+</string>
+                         </property>
+                         <property name="text">
+                          <string/>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
                      </widget>
                     </item>
                     <item>
-                     <widget class="QFrame" name="frame_7">
+                     <widget class="QFrame" name="frame_graph">
                       <property name="styleSheet">
-                       <string notr="true">background-color: rgb(200, 230, 201);</string>
-                      </property>
-                      <property name="frameShape">
-                       <enum>QFrame::StyledPanel</enum>
-                      </property>
-                      <property name="frameShadow">
-                       <enum>QFrame::Raised</enum>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QFrame" name="frame_8">
-                      <property name="styleSheet">
-                       <string notr="true">background-color: rgb(200, 230, 201);</string>
+                       <string notr="true">background-color: rgb(200, 230, 201);
+border-radius: 25%;</string>
                       </property>
                       <property name="frameShape">
                        <enum>QFrame::StyledPanel</enum>
@@ -1369,41 +1392,56 @@ QPushButton:pressed {
                    </layout>
                   </widget>
                  </item>
-                 <item>
-                  <widget class="QFrame" name="frame_3">
+                 <item alignment="Qt::AlignBottom">
+                  <widget class="QFrame" name="frame_stats_bn">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>300</width>
+                     <height>0</height>
+                    </size>
+                   </property>
                    <property name="frameShape">
                     <enum>QFrame::StyledPanel</enum>
                    </property>
                    <property name="frameShadow">
                     <enum>QFrame::Raised</enum>
                    </property>
-                   <layout class="QHBoxLayout" name="horizontalLayout_21">
+                   <layout class="QVBoxLayout" name="verticalLayout_7">
                     <item>
-                     <widget class="QFrame" name="frame_4">
+                     <widget class="QPushButton" name="bn_sort">
                       <property name="styleSheet">
-                       <string notr="true">background-color: rgb(200, 230, 201);</string>
+                       <string notr="true">QPushButton {
+	border: none;
+	background-color: rgb(46, 125, 50);
+	color: white;
+	padding: 8px 16px; 
+	border-radius: 15px;       
+    font-size: 14px; 
+	font-size: 20px;          
+    font-family: Inter;
+}
+QPushButton:hover {
+	background-color: rgb(129,199,132);
+}
+QPushButton:pressed {	
+	background-color: rgb(129,199,132);
+}</string>
                       </property>
-                      <property name="frameShape">
-                       <enum>QFrame::StyledPanel</enum>
-                      </property>
-                      <property name="frameShadow">
-                       <enum>QFrame::Raised</enum>
+                      <property name="text">
+                       <string>Sortuj</string>
                       </property>
                      </widget>
                     </item>
                     <item>
-                     <widget class="QFrame" name="frame_5">
-                      <property name="frameShape">
-                       <enum>QFrame::StyledPanel</enum>
-                      </property>
-                      <property name="frameShadow">
-                       <enum>QFrame::Raised</enum>
-                      </property>
-                      <layout class="QVBoxLayout" name="verticalLayout_6">
-                       <item>
-                        <widget class="QPushButton" name="pushButton">
-                         <property name="styleSheet">
-                          <string notr="true">QPushButton {
+                     <widget class="QPushButton" name="bn_reset">
+                      <property name="styleSheet">
+                       <string notr="true">QPushButton {
 	border: none;
 	background-color: rgb(46, 125, 50);
 	color: white;
@@ -1419,38 +1457,10 @@ QPushButton:hover {
 QPushButton:pressed {	
 	background-color: rgb(129,199,132);
 }</string>
-                         </property>
-                         <property name="text">
-                          <string>PushButton</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QPushButton" name="pushButton_2">
-                         <property name="styleSheet">
-                          <string notr="true">QPushButton {
-	border: none;
-	background-color: rgb(46, 125, 50);
-	color: white;
-	padding: 8px 16px; 
-	border-radius: 15px;       
-    font-size: 14px; 
-	font-size: 20px;          
-    font-family: Inter;
-}
-QPushButton:hover {
-	background-color: rgb(129,199,132);
-}
-QPushButton:pressed {	
-	background-color: rgb(129,199,132);
-}</string>
-                         </property>
-                         <property name="text">
-                          <string>PushButton</string>
-                         </property>
-                        </widget>
-                       </item>
-                      </layout>
+                      </property>
+                      <property name="text">
+                       <string>Resetuj dane</string>
+                      </property>
                      </widget>
                     </item>
                    </layout>
