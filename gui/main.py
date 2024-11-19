@@ -7,6 +7,7 @@ from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton, QLabel, QWid
 from PyQt5.QtGui import QFont
 from ui_function import *
 from collections import Counter
+import random
 import json
 import os
 

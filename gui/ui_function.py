@@ -123,10 +123,28 @@ class UIFunction(MainWindow):
         else:
             QMessageBox.information(self, "Brak pliku", "Nie wybrano żadnego pliku.")
 
-    def analyzePhoto(self):
-        file_path = "icons/bin_blue.png"
 
-        self.ui.lab_home_hed.setText("Opis")
+
+    def analyzePhoto(self):
+
+
+
+        try:
+            with open("waste_desc.json", "r", encoding="utf-8") as file:
+                waste_data = json.load(file)
+        except Exception as e:
+            QMessageBox.warning(self, "Błąd", f"Nie udało się odczytać pliku JSON: {e}")
+            return
+
+        # ---------------
+        categories = list(waste_data.keys())
+        category = random.choice(categories)
+        self.category = category
+        # ------------------
+        category_info = waste_data.get(category)
+        description = category_info.get("description", "Brak opisu")
+        file_path = category_info.get("icon", "")
+
 
         if file_path:
             pixmap = QPixmap(file_path)
@@ -138,8 +156,7 @@ class UIFunction(MainWindow):
                 self.ui.lab_desc_photo.setPixmap(scaled_pixmap)
                 self.ui.lab_desc_photo.setAlignment(Qt.AlignCenter)
 
-                text = "Analizowany odpad został najprawdopodobniej wykonany z papieru i powinien zostać wrzucony do niebieskiego kosza."
-                self.ui.lab_desc_text.setText(text)
+                self.ui.lab_desc_text.setText(description)
                 self.ui.lab_desc_text.setWordWrap(True)
                 self.ui.lab_desc_text.setAlignment(Qt.AlignCenter)
 
@@ -149,19 +166,28 @@ class UIFunction(MainWindow):
                                                     "border-top-left-radius: 25%;"
                                                     "border-top-right-radius: 25%;"
                                                     "background-color: rgb(46, 125, 50);")
-
+                
                 self.ui.stackedWidget_2.setCurrentWidget(self.ui.page_save)
             else:
                 QMessageBox.warning(self, "Błąd", "Nie udało się załadować obrazu.")
 
     def savePhoto(self):
-        #saving data into JSON file
         if hasattr(self, 'selected_file_path') and self.selected_file_path:
-            data = {self.selected_file_path: "papier"}
+            new_data = {self.selected_file_path: self.category}
+
             try:
+                try:
+                    with open("image_base.json", "r", encoding="utf-8") as json_file:
+                        data = json.load(json_file)
+                except (FileNotFoundError, json.JSONDecodeError):
+                    data = {}
+
+                data.update(new_data)
+
                 with open("image_base.json", "w", encoding="utf-8") as json_file:
                     json.dump(data, json_file, ensure_ascii=False, indent=4)
-                QMessageBox.information(self, "Sukces", "Dane zostały zapisane")
+
+                QMessageBox.information(self, "Sukces", "Dane zostały zapisane.")
             except Exception as e:
                 QMessageBox.critical(self, "Błąd zapisu", f"Nie udało się zapisać: {e}")
         else:
@@ -171,6 +197,7 @@ class UIFunction(MainWindow):
         with open('image_base.json', 'r') as file:
             data = json.load(file)
         categories = list(data.values())
+        print(categories)
         category_counts = Counter(categories)
 
         most_common_categories = category_counts.most_common(3)
@@ -178,8 +205,9 @@ class UIFunction(MainWindow):
         labels = [self.ui.lab_number1, self.ui.lab_number2, self.ui.lab_number3]
 
         for i, (category, count) in enumerate(most_common_categories):
-            result_text = f"{i + 1}. {category} ({count} razy)"
+            result_text = f"{category} \n{count}"
             labels[i].setText(result_text)
+            labels[i].setWordWrap(True)
 
         for i in range(len(most_common_categories), 3):
             labels[i].setText("")
