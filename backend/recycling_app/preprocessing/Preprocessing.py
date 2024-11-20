@@ -3,7 +3,7 @@ from PIL import Image
 import torch
 
 
-class Preprocessing:
+class Preprocessor:
 
     def __init__(self) -> None:
         self.transform = v2.Compose(
