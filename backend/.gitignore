@@ -1,6 +1,7 @@
 # data
-garbage_classification/
-real_waste/
+data/*
+!data/.gitkeep
+
 
 
 # Byte-compiled / optimized / DLL files
