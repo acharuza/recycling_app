@@ -1,6 +1,6 @@
 # data
-processed/
-raw/
+data/
+!data/.gitkeep
 
 
 # Byte-compiled / optimized / DLL files
