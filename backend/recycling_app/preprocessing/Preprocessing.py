@@ -1,6 +1,8 @@
 from torchvision.transforms import v2
 from PIL import Image
 import torch
+from io import BytesIO
+from typing import Union
 
 
 class Preprocessor:
@@ -19,10 +21,16 @@ class Preprocessor:
             ]
         )
 
-    def __call__(self, image_path: str) -> torch.Tensor:
-        image = self.__load_image(image_path)
-        transformed_img = self.transform(image)
-        return transformed_img
+    # def __call__(self, image: Union[str, Image.Image, BytesIO]) -> torch.Tensor:
+    #     if isinstance(image, str):
+    #         image = self.__load_image_from_path(image)
+    #     elif isinstance(image, BytesIO):
+    #         image = self.__load_image_from_memory(image)
+    #     transformed_img = self.transform(image)
+    #     return transformed_img
 
-    def __load_image(self, image_path: str) -> Image:
-        return Image.open(image_path)
+    # def __load_image_from_path(self, image_path: str) -> Image.Image:
+    #     return Image.open(image_path)
+
+    # def __load_image_from_memory(self, image_data: BytesIO) -> Image.Image:
+    #     return Image.open(image_data)
