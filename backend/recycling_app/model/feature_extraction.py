@@ -11,6 +11,8 @@ class FeatureExtractor:
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         if model_name == "resnet101":
             self.model = models.resnet101(weights=models.ResNet101_Weights.DEFAULT)
+        elif model_name == "resnet152":
+            self.model = models.resnet152(weights=models.ResNet152_Weights.DEFAULT)
         elif model_name == "alexnet":
             self.model = models.alexnet(weights=models.AlexNet_Weights.DEFAULT)
         elif model_name == "googlenet":
