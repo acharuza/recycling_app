@@ -6,17 +6,14 @@ from tqdm import tqdm
 
 class NNClassifier:
 
-    def __init__(self, input_size, hidden_size, output_size, dropout=0.5):
+    def __init__(self, input_size, hidden_size, output_size):
         self.model = nn.Sequential(
             nn.Linear(input_size, hidden_size),
             nn.ReLU(),
-            nn.Dropout(dropout),
             nn.Linear(hidden_size, hidden_size),
             nn.ReLU(),
-            nn.Dropout(dropout),
             nn.Linear(hidden_size, hidden_size),
             nn.ReLU(),
-            nn.Dropout(dropout),
             nn.Linear(hidden_size, output_size),
         )
         self.criterion = nn.CrossEntropyLoss()
