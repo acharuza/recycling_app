@@ -1,5 +1,7 @@
 from torchvision.transforms import v2
 import torch
+from typing import Union
+from io import BytesIO
 
 
 class Preprocessor:
