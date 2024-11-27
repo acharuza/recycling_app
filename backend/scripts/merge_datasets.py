@@ -65,14 +65,5 @@ def merge_datasets(data_dirs: list):
 
 if __name__ == "__main__":
     # tutaj trzeba podać ścieżki do folderów z danymi
-    data_dirs = [
-        os.path.join(
-            DATA_DIRECTORY,
-            "RealWaste",
-        ),
-        os.path.join(
-            DATA_DIRECTORY,
-            "Garbage classification",
-        ),
-    ]
+    data_dirs = []
     merge_datasets(data_dirs)
