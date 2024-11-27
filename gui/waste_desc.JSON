@@ -9,26 +9,26 @@
   },
   "Metal": {
     "description": "Odpad został najprawdopodobniej wykonany z metalu. Po zgnieceniu możesz go wrzucić do żółtego kosza na metal.\n Pamiętaj żeby do tego pojemnika nie wyrzucać zużytych baterii, sprzętów elektrycznych i elektronicznych oraz opakowań po farbach i olejach.",
-    "icon": "icons/bin_blue.png"
+    "icon": "icons/bin_yellow.png"
   },
   "Tworzywa sztuczne": {
     "description": "Odpad został najprawdopodobniej wykonany z tworzywa sztucznego. Po zgnieceniu możesz go wrzucić do żółtego kosza na tworzywa sztuczne.\n Pamiętaj żeby do tego pojemnika nie wrzucać opakowań po farbach i olejach oraz zabrudzonych opakowań styropianowych.",
-    "icon": "icons/bin_blue.png"
+    "icon": "icons/bin_yellow.png"
   },
   "Szkło": {
     "description": "Odpad został najprawdopodobniej wykonany ze szkła. Możesz go wrzucić do zielonego kosza na szkło.\n Pamiętaj żeby do tego pojemnika nie wyrzucać szkła stołowego, ceramiki, szkła okiennego, luster, szyb, żarówek, porcelany oraz potłuczonych naczyń.",
-    "icon": "icons/bin_blue.png"
+    "icon": "icons/bin_green.png"
   },
   "Odpady organiczne": {
     "description": "Odpad najprawdopodobniej można wyrzucić do brązowego pojemnika na odpady organiczne.\n Pamiętaj, żeby nie wyrzucać tam resztek mięsnych, kości, tłuszczy zwierzęcych, oleju, ziemi i odchodów zwierzęcych.",
-    "icon": "icons/bin_blue.png"
+    "icon": "icons/bin_brown.png"
   },
   "Odpady zmieszane": {
-    "description": "Tego odpadu najprawdopodobniej nie da się rozdzielić na odpady segregowalne i powinien trafić do szarego kosza na odpady zmieszane.\n Pamiętaj, aby nie wrzucać do niego sprzętu elektronicznego i elektrycznego, AGD, baterii i akumulatorów, odpadów budowlanych i remontowych, odpadów zielonych, leków oraz chemikalii.",
-    "icon": "icons/bin_blue.png"
+    "description": "Tego odpadu najprawdopodobniej nie da się rozdzielić na odpady segregowalne i powinien trafić do szarego kosza na odpady zmieszane.\n Pamiętaj, aby nie wrzucać do niego sprzętu elektronicznego i elektrycznego, AGD, baterii i akumulatorów, odpadów budowlanych, odpadów zielonych, leków oraz chemikalii.",
+    "icon": "icons/bin_grey.png"
   },
   "Tekstylia": {
     "description": "Odpad najprawdopodobniej można wyrzucić do pojemnika na tekstylie - PCK lub Caritas.\n Pamiętaj, żeby nie wyrzucać tam zawilgoconych tekstyliów, zanieczyszczonych chemikaliami lub innymi substancjami. Jeżeli jest to odzież w dobrym stanie, rozważ oddanie ich do organizacji zbierających używane ubrania.",
-    "icon": "icons/bin_blue.png"
+    "icon": "icons/bin_pink.png"
   }
 }

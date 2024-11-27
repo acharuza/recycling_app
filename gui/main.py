@@ -1,12 +1,21 @@
 import sys
+import matplotlib
+
+matplotlib.use("Qt5Agg")
 from PyQt5 import uic, QtCore, QtGui
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap, QLinearGradient, QColor, QPalette, QBrush
 from PyQt5.QtCore import QPropertyAnimation
-from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton, QLabel, QWidget, QFrame, QFileDialog, QMessageBox, QVBoxLayout
+from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton, QLabel, QWidget, QFrame, QFileDialog, QMessageBox, \
+    QVBoxLayout
 from PyQt5.QtGui import QFont
 from ui_function import *
 from collections import Counter
+import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
+from matplotlib.offsetbox import OffsetImage, AnnotationBbox
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.ticker import MultipleLocator
 import random
 import json
 import os
@@ -17,30 +26,30 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__()
         self.ui = uic.loadUi("ui_main.ui", self)
 
-        #Setting window title
+        # Setting window title
         applicationName = "Recycle App"
         self.setWindowTitle(applicationName)
         UIFunction.labelTitle(self, applicationName)
 
-        #Initilize stacked widget
+        # Initilize stacked widget
         UIFunction.initStackTab(self)
 
-        #Initialize max, min, close of the title bar
+        # Initialize max, min, close of the title bar
         UIFunction.constantFunction(self)
 
         UIFunction.stackPage(self)
 
-        #Menu buttons
+        # Menu buttons
         self.ui.bn_home.clicked.connect(lambda: UIFunction.buttonPressed(self, 'bn_home'))
         self.ui.bn_stats.clicked.connect(lambda: (
             UIFunction.buttonPressed(self, 'bn_stats'),
             UIFunction.statsPage(self)
         ))
 
-        #Used for stacked widgets
+        # Used for stacked widgets
         UIFunction.stackPage(self)
 
-        #Used for moving window
+        # Used for moving window
         self.dragPos = self.pos()
 
         def moveWindow(event):
@@ -54,7 +63,8 @@ class MainWindow(QMainWindow):
                 self.dragPos = event.globalPos()
                 event.accept()
 
-
+        self.ui.bn_report.setVisible(False)
+        self.ui.bn_like.setVisible(False)
         self.ui.frame_appname.mouseMoveEvent = moveWindow
         self.ui.bn_load_photo.clicked.connect(lambda: UIFunction.loadPhoto(self))
         self.ui.bn_new.clicked.connect(lambda: UIFunction.loadPhoto(self))
@@ -62,12 +72,8 @@ class MainWindow(QMainWindow):
         self.ui.bn_analyze.clicked.connect(lambda: UIFunction.analyzePhoto(self))
         self.ui.bn_save.clicked.connect(lambda: UIFunction.savePhoto(self))
 
-        
-
-
     def mousePressEvent(self, event):
         self.dragPos = event.globalPos()
-
 
 
 if __name__ == "__main__":

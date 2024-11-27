@@ -1,10 +1,9 @@
-
-
 from main import *
 
-GLOBAL_STATE = 0 #checking if the window is full screen or not
+GLOBAL_STATE = 0  # checking if the window is full screen or not
 GLOBAL_TITLE_BAR = True
-init = False #for initition of the window
+init = False  # for initition of the window
+
 
 class UIFunction(MainWindow):
 
@@ -39,7 +38,7 @@ class UIFunction(MainWindow):
         GLOBAL_STATE = status
 
     def constantFunction(self):
-        #double click to maximize window
+        # double click to maximize window
         def maxDoubleClick(stateMouse):
             if stateMouse.type() == QtCore.QEvent.MouseButtonDblClick:
                 QtCore.QTimer.singleShot(250, lambda: UIFunction.maximize_restore(self))
@@ -63,8 +62,8 @@ class UIFunction(MainWindow):
 
     def stackPage(self):
         pass
-        #changing text
-        #self.ui.lab_home_desc.setText("Profile")
+        # changing text
+        # self.ui.lab_home_desc.setText("Profile")
 
     def buttonPressed(self, buttonName):
 
@@ -116,18 +115,16 @@ class UIFunction(MainWindow):
                 pixmap.scaled(self.ui.lab_photo.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation))
             self.selected_file_path = file_path
             self.ui.lab_home_hed.setText("")
-            self.ui.lab_desc_text.setText("")
+            self.ui.lab_desc_text.setText("Analizuj obraz, aby poznać kategorię odpadu lub wczytaj nowy.")
             self.ui.lab_desc_photo.setPixmap(QPixmap())
+            self.ui.bn_report.setVisible(False)
+            self.ui.bn_like.setVisible(False)
             self.ui.stackedWidget_2.setCurrentWidget(self.ui.page_change_save)
 
         else:
             QMessageBox.information(self, "Brak pliku", "Nie wybrano żadnego pliku.")
 
-
-
     def analyzePhoto(self):
-
-
 
         try:
             with open("waste_desc.json", "r", encoding="utf-8") as file:
@@ -145,7 +142,6 @@ class UIFunction(MainWindow):
         description = category_info.get("description", "Brak opisu")
         file_path = category_info.get("icon", "")
 
-
         if file_path:
             pixmap = QPixmap(file_path)
 
@@ -158,16 +154,17 @@ class UIFunction(MainWindow):
 
                 self.ui.lab_desc_text.setText(description)
                 self.ui.lab_desc_text.setWordWrap(True)
-                self.ui.lab_desc_text.setAlignment(Qt.AlignCenter)
 
                 self.ui.lab_home_hed.setText("Opis")
                 self.ui.lab_home_hed.setAlignment(Qt.AlignCenter)
                 self.ui.lab_home_hed.setStyleSheet("color: white; "
-                                                    "border-top-left-radius: 25%;"
-                                                    "border-top-right-radius: 25%;"
-                                                    "background-color: rgb(46, 125, 50);")
-                
+                                                   "border-top-left-radius: 25%;"
+                                                   "border-top-right-radius: 25%;"
+                                                   "background-color: rgb(46, 125, 50);")
+
                 self.ui.stackedWidget_2.setCurrentWidget(self.ui.page_save)
+                self.ui.bn_report.setVisible(True)
+                self.ui.bn_like.setVisible(True)
             else:
                 QMessageBox.warning(self, "Błąd", "Nie udało się załadować obrazu.")
 
@@ -196,8 +193,8 @@ class UIFunction(MainWindow):
     def statsPage(self):
         with open('image_base.json', 'r') as file:
             data = json.load(file)
+
         categories = list(data.values())
-        print(categories)
         category_counts = Counter(categories)
 
         most_common_categories = category_counts.most_common(3)
@@ -212,10 +209,51 @@ class UIFunction(MainWindow):
         for i in range(len(most_common_categories), 3):
             labels[i].setText("")
 
+        all_categories = ["Papier", "Odpady organiczne", "Metal", "Szkło", "Tworzywa sztuczne", "Tekstylia", "Karton",
+                          "Odpady zmieszane"]
+        category_counts = {category: category_counts.get(category, 0) for category in all_categories}
+        print(category_counts)
 
+        sorted_categories = sorted(category_counts.items(), key=lambda x: x[1], reverse=True)
+        sorted_categories, sorted_values = zip(*sorted_categories)
 
+        with open('waste_desc.json', 'r', encoding='utf-8') as file:
+            waste_data = json.load(file)
 
+        image_paths = {category: data["icon"] for category, data in waste_data.items()}
 
+        sorted_image_paths = [image_paths[category] for category in sorted_categories]
 
+        fig, ax = plt.subplots(figsize=(9, 3.5))
+        bars = ax.bar(range(len(sorted_categories)), sorted_values, color='#2E7D32', width=0.4)
 
+        for i, (bar, image_path) in enumerate(zip(bars, sorted_image_paths)):
+            img = mpimg.imread(image_path)
+            imagebox = OffsetImage(img, zoom=0.60)
+            ab = AnnotationBbox(imagebox, (bar.get_x() + bar.get_width() / 2, 0.165),
+                                frameon=False, box_alignment=(0.5, 1))
+            ax.add_artist(ab)
 
+        ax.set_xticks([])
+        ax.set_ylim(0, max(sorted_values) + 1)
+        plt.subplots_adjust(bottom=0.2)
+
+        ax.set_ylabel('Ilość')
+        fig.patch.set_facecolor('none')
+        ax.set_facecolor('none')
+        ax.yaxis.set_major_locator(plt.MultipleLocator(1))
+        ax.spines['top'].set_visible(False)
+        ax.spines['right'].set_visible(False)
+        ax.spines['left'].set_linewidth(2)
+        ax.spines['bottom'].set_linewidth(2)
+
+        fig.savefig('plot.png', format='png', bbox_inches='tight')
+
+        pixmap = QPixmap('plot.png')
+
+        self.ui.lab_graph.setGeometry(0, 0, 938, 500)
+        self.ui.lab_graph.setAlignment(Qt.AlignCenter)
+
+        self.ui.lab_graph.setPixmap(pixmap)
+
+        os.remove('plot.png')
