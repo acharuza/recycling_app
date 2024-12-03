@@ -1,7 +1,5 @@
 import sys
 import matplotlib
-
-matplotlib.use("Qt5Agg")
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5 import uic, QtCore, QtGui
 from PyQt5.QtCore import Qt
@@ -12,11 +10,6 @@ from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton, QLabel, QWid
 from PyQt5.QtGui import QFont
 from ui_function import *
 from collections import Counter
-import matplotlib.pyplot as plt
-import matplotlib.image as mpimg
-from matplotlib.offsetbox import OffsetImage, AnnotationBbox
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-from matplotlib.ticker import MultipleLocator
 from datetime import datetime
 import random
 import json
@@ -31,32 +24,32 @@ class MainWindow(QMainWindow):
         # Setting window title
         applicationName = "Recycle App"
         self.setWindowTitle(applicationName)
-        UIFunction.labelTitle(self, applicationName)
+        UIFunction.label_title(self, applicationName)
 
         # Initilize stacked widget
-        UIFunction.initStackTab(self)
+        UIFunction.init_stack_tab(self)
 
         # Initialize max, min, close of the title bar
-        UIFunction.constantFunction(self)
+        UIFunction.constant_function(self)
 
-        UIFunction.stackPage(self)
+        UIFunction.stack_page(self)
 
         # Menu buttons
-        self.ui.bn_home.clicked.connect(lambda: UIFunction.buttonPressed(self, 'bn_home'))
+        self.ui.bn_home.clicked.connect(lambda: UIFunction.button_pressed(self, 'bn_home'))
         self.ui.bn_stats.clicked.connect(lambda: (
-            UIFunction.buttonPressed(self, 'bn_stats'),
-            UIFunction.statsPage(self)
+            UIFunction.button_pressed(self, 'bn_stats'),
+            UIFunction.stats_page(self)
         ))
 
         # Used for stacked widgets
-        UIFunction.stackPage(self)
+        UIFunction.stack_page(self)
 
         # Used for moving window
         self.dragPos = self.pos()
 
-        def moveWindow(event):
+        def move_window(event):
             # if maximized back to normal
-            if UIFunction.returnStatus() == 1:
+            if UIFunction.return_status() == 1:
                 UIFunction.maximize_restore(self)
 
             # move window
@@ -65,17 +58,21 @@ class MainWindow(QMainWindow):
                 self.dragPos = event.globalPos()
                 event.accept()
 
+        # buttons
         self.ui.bn_report.setVisible(False)
         self.ui.bn_like.setVisible(False)
-        self.ui.frame_appname.mouseMoveEvent = moveWindow
-        self.ui.bn_load_photo.clicked.connect(lambda: UIFunction.loadPhoto(self))
-        self.ui.bn_new.clicked.connect(lambda: UIFunction.loadPhoto(self))
-        self.ui.bn_new_2.clicked.connect(lambda: UIFunction.loadPhoto(self))
-        self.ui.bn_analyze.clicked.connect(lambda: UIFunction.analyzePhoto(self))
-        self.ui.bn_save.clicked.connect(lambda: UIFunction.savePhoto(self))
-        #self.ui.bn_sort.clicked.connect(lambda: UIFunction.toggleSortMode(self))
+        self.ui.frame_appname.mouseMoveEvent = move_window
+        self.ui.bn_load_photo.clicked.connect(lambda: UIFunction.load_photo(self))
+        self.ui.bn_new.clicked.connect(lambda: UIFunction.load_photo(self))
+        self.ui.bn_new_2.clicked.connect(lambda: UIFunction.load_photo(self))
+        self.ui.bn_analyze.clicked.connect(lambda: UIFunction.analyze_photo(self))
+        self.ui.bn_save.clicked.connect(lambda: UIFunction.save_photo(self))
+        # self.ui.bn_sort.clicked.connect(lambda: UIFunction.toggleSortMode(self))
 
-    def mousePressEvent(self, event):
+        # bn_like - przycisk do pozytywnego feedbacku
+        # bn_report - przycisk do negatywnego feedbacku
+
+    def mouse_press_event(self, event):
         self.dragPos = event.globalPos()
 
 

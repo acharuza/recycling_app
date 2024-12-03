@@ -1,8 +1,7 @@
 from PyQt5.QtCore import QUrl
+import plotly.graph_objects as go
 
 from main import *
-import plotly.graph_objects as go
-import kaleido
 
 GLOBAL_STATE = 0  # checking if the window is full screen or not
 GLOBAL_TITLE_BAR = True
@@ -12,13 +11,14 @@ init = False  # for initition of the window
 class UIFunction(MainWindow):
     sort_mode = 'quantity'
 
-    def initStackTab(self):
+    def init_stack_tab(self):
         global init
 
-    def labelTitle(self, appName):
+    def label_title(self, appName):
         self.ui.lab_appname.setText(appName)
 
     def maximize_restore(self):
+        # min/max screen
         global GLOBAL_STATE
         status = GLOBAL_STATE
         if status == 0:
@@ -35,16 +35,16 @@ class UIFunction(MainWindow):
             self.ui.bn_max.setIcon(QtGui.QIcon("icons/maximize.png"))
             self.ui.frame_drag.show()
 
-    def returnStatus():
+    def return_status():
         return GLOBAL_STATE
 
-    def setStatus(status):
+    def set_status(status):
         global GLOBAL_STATE
         GLOBAL_STATE = status
 
-    def constantFunction(self):
+    def constant_function(self):
         # double click to maximize window
-        def maxDoubleClick(stateMouse):
+        def max_double_click(stateMouse):
             if stateMouse.type() == QtCore.QEvent.MouseButtonDblClick:
                 QtCore.QTimer.singleShot(250, lambda: UIFunction.maximize_restore(self))
 
@@ -52,7 +52,7 @@ class UIFunction(MainWindow):
         if True:
             self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
             self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
-            self.ui.frame_appname.mouseDoubleClickEvent = maxDoubleClick
+            self.ui.frame_appname.mouseDoubleClickEvent = max_double_click
         else:
             self.ui.frame_close.hide()
             self.ui.frame_max.hide()
@@ -60,18 +60,14 @@ class UIFunction(MainWindow):
             self.ui.frame_drag.hide()
 
         self.ui.bn_min.clicked.connect(lambda: self.showMinimized())
-
         self.ui.bn_max.clicked.connect(lambda: UIFunction.maximize_restore(self))
-
         self.ui.bn_close.clicked.connect(lambda: self.close())
 
-    def stackPage(self):
+    def stack_page(self):
         pass
-        # changing text
-        # self.ui.lab_home_desc.setText("Profile")
 
-    def buttonPressed(self, buttonName):
-
+    def button_pressed(self, button_name):
+        # changing styles of buttons
         default_button_style = """
                     QPushButton {
                         border: none;
@@ -103,15 +99,16 @@ class UIFunction(MainWindow):
         self.ui.bn_home.setStyleSheet(default_button_style)
         self.ui.bn_stats.setStyleSheet(default_button_style)
 
-        if buttonName == 'bn_home':
+        if button_name == 'bn_home':
             self.ui.stackedWidget.setCurrentWidget(self.ui.page_home)
             self.ui.bn_home.setStyleSheet(active_button_style)
 
-        elif buttonName == 'bn_stats':
+        elif button_name == 'bn_stats':
             self.ui.stackedWidget.setCurrentWidget(self.ui.page_stats)
             self.ui.bn_stats.setStyleSheet(active_button_style)
 
-    def loadPhoto(self):
+    def load_photo(self):
+        # function for loading photos
         file_path, _ = QFileDialog.getOpenFileName(self, "Wybierz zdjęcie", "", "Images (*.png *.jpg *.jpeg *.bmp)")
 
         if file_path:
@@ -129,7 +126,8 @@ class UIFunction(MainWindow):
         else:
             QMessageBox.information(self, "Brak pliku", "Nie wybrano żadnego pliku.")
 
-    def analyzePhoto(self):
+    def analyze_photo(self):
+        # function for analyzing photos
 
         try:
             with open("waste_desc.json", "r", encoding="utf-8") as file:
@@ -138,11 +136,12 @@ class UIFunction(MainWindow):
             QMessageBox.warning(self, "Błąd", f"Nie udało się odczytać pliku JSON: {e}")
             return
 
-        # ---------------
+        # --------------- #losowy wybór kategorii z dostępnych jako analiza zdjęcia
         categories = list(waste_data.keys())
         category = random.choice(categories)
         self.category = category
         # ------------------
+
         category_info = waste_data.get(category)
         description = category_info.get("description", "Brak opisu")
         file_path = category_info.get("icon_big", "")
@@ -174,7 +173,9 @@ class UIFunction(MainWindow):
             else:
                 QMessageBox.warning(self, "Błąd", "Nie udało się załadować obrazu.")
 
-    def savePhoto(self):
+    def save_photo(self):
+        # function for saving photos
+
         if hasattr(self, 'selected_file_path') and self.selected_file_path:
             current_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             new_data = {current_date: self.category}
@@ -197,8 +198,7 @@ class UIFunction(MainWindow):
         else:
             QMessageBox.warning(self, "Brak danych", "Nie wybrano pliku do zapisania.")
 
-
-    def statsPage(self):
+    def stats_page(self):
         with open('image_base.json', 'r') as file:
             data = json.load(file)
 
@@ -209,11 +209,10 @@ class UIFunction(MainWindow):
             waste_data = json.load(file)
 
         key_to_name = {key: value['name'] for key, value in waste_data.items()}
-
         most_common_categories = [(key_to_name[key], count) for key, count in category_counts.most_common(3)]
-
         labels = [self.ui.lab_number1, self.ui.lab_number2, self.ui.lab_number3]
 
+        # top 3 categories
         for i, (category_name, count) in enumerate(most_common_categories):
             result_text = f"{category_name} \n{count}"
             labels[i].setText(result_text)
@@ -223,14 +222,14 @@ class UIFunction(MainWindow):
             labels[i].setText("")
 
         all_categories = [value['name'] for value in waste_data.values()]
-
         category_counts_with_names = {key_to_name[key]: category_counts.get(key, 0) for key in waste_data}
 
+        # plot
         fig = go.Figure()
 
         fig.add_trace(go.Bar(
             x=all_categories,
-            y=[category_counts_with_names[category] for category in all_categories],  # Liczby
+            y=[category_counts_with_names[category] for category in all_categories],
             hoverinfo='text',
             marker=dict(color='#2E7D32')
         ))
@@ -249,4 +248,4 @@ class UIFunction(MainWindow):
         url = QUrl.fromLocalFile(html_path)
         self.ui.web_view.setUrl(url)
 
-        #os.remove('plot.html')
+        # os.remove('plot.html')
