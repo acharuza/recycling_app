@@ -1,4 +1,8 @@
+from PyQt5.QtCore import QUrl
+
 from main import *
+import plotly.graph_objects as go
+import kaleido
 
 GLOBAL_STATE = 0  # checking if the window is full screen or not
 GLOBAL_TITLE_BAR = True
@@ -6,6 +10,7 @@ init = False  # for initition of the window
 
 
 class UIFunction(MainWindow):
+    sort_mode = 'quantity'
 
     def initStackTab(self):
         global init
@@ -140,7 +145,7 @@ class UIFunction(MainWindow):
         # ------------------
         category_info = waste_data.get(category)
         description = category_info.get("description", "Brak opisu")
-        file_path = category_info.get("icon", "")
+        file_path = category_info.get("icon_big", "")
 
         if file_path:
             pixmap = QPixmap(file_path)
@@ -155,12 +160,13 @@ class UIFunction(MainWindow):
                 self.ui.lab_desc_text.setText(description)
                 self.ui.lab_desc_text.setWordWrap(True)
 
-                self.ui.lab_home_hed.setText("Opis")
+                self.ui.lab_home_hed.setText(category_info['name'])
                 self.ui.lab_home_hed.setAlignment(Qt.AlignCenter)
                 self.ui.lab_home_hed.setStyleSheet("color: white; "
                                                    "border-top-left-radius: 25%;"
                                                    "border-top-right-radius: 25%;"
-                                                   "background-color: rgb(46, 125, 50);")
+                                                   "background-color: rgb(46, 125, 50);"
+                                                   "font-size: 38px;")
 
                 self.ui.stackedWidget_2.setCurrentWidget(self.ui.page_save)
                 self.ui.bn_report.setVisible(True)
@@ -170,7 +176,8 @@ class UIFunction(MainWindow):
 
     def savePhoto(self):
         if hasattr(self, 'selected_file_path') and self.selected_file_path:
-            new_data = {self.selected_file_path: self.category}
+            current_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            new_data = {current_date: self.category}
 
             try:
                 try:
@@ -190,6 +197,7 @@ class UIFunction(MainWindow):
         else:
             QMessageBox.warning(self, "Brak danych", "Nie wybrano pliku do zapisania.")
 
+
     def statsPage(self):
         with open('image_base.json', 'r') as file:
             data = json.load(file)
@@ -197,63 +205,48 @@ class UIFunction(MainWindow):
         categories = list(data.values())
         category_counts = Counter(categories)
 
-        most_common_categories = category_counts.most_common(3)
+        with open('waste_desc.json', 'r') as file:
+            waste_data = json.load(file)
+
+        key_to_name = {key: value['name'] for key, value in waste_data.items()}
+
+        most_common_categories = [(key_to_name[key], count) for key, count in category_counts.most_common(3)]
 
         labels = [self.ui.lab_number1, self.ui.lab_number2, self.ui.lab_number3]
 
-        for i, (category, count) in enumerate(most_common_categories):
-            result_text = f"{category} \n{count}"
+        for i, (category_name, count) in enumerate(most_common_categories):
+            result_text = f"{category_name} \n{count}"
             labels[i].setText(result_text)
             labels[i].setWordWrap(True)
 
         for i in range(len(most_common_categories), 3):
             labels[i].setText("")
 
-        all_categories = ["Papier", "Odpady organiczne", "Metal", "Szkło", "Tworzywa sztuczne", "Tekstylia", "Karton",
-                          "Odpady zmieszane"]
-        category_counts = {category: category_counts.get(category, 0) for category in all_categories}
-        print(category_counts)
+        all_categories = [value['name'] for value in waste_data.values()]
 
-        sorted_categories = sorted(category_counts.items(), key=lambda x: x[1], reverse=True)
-        sorted_categories, sorted_values = zip(*sorted_categories)
+        category_counts_with_names = {key_to_name[key]: category_counts.get(key, 0) for key in waste_data}
 
-        with open('waste_desc.json', 'r', encoding='utf-8') as file:
-            waste_data = json.load(file)
+        fig = go.Figure()
 
-        image_paths = {category: data["icon"] for category, data in waste_data.items()}
+        fig.add_trace(go.Bar(
+            x=all_categories,
+            y=[category_counts_with_names[category] for category in all_categories],  # Liczby
+            hoverinfo='text',
+            marker=dict(color='#2E7D32')
+        ))
 
-        sorted_image_paths = [image_paths[category] for category in sorted_categories]
+        fig.update_layout(
+            title='Liczba odpadów w poszczególnych kategoriach',
+            template='plotly_white',
+            showlegend=False,
+            paper_bgcolor='#C8E6C9',
+            plot_bgcolor='#C8E6C9',
+            autosize=True
+        )
 
-        fig, ax = plt.subplots(figsize=(9, 3.5))
-        bars = ax.bar(range(len(sorted_categories)), sorted_values, color='#2E7D32', width=0.4)
+        fig.write_html("plot.html")
+        html_path = os.path.abspath("plot.html")
+        url = QUrl.fromLocalFile(html_path)
+        self.ui.web_view.setUrl(url)
 
-        for i, (bar, image_path) in enumerate(zip(bars, sorted_image_paths)):
-            img = mpimg.imread(image_path)
-            imagebox = OffsetImage(img, zoom=0.60)
-            ab = AnnotationBbox(imagebox, (bar.get_x() + bar.get_width() / 2, 0.165),
-                                frameon=False, box_alignment=(0.5, 1))
-            ax.add_artist(ab)
-
-        ax.set_xticks([])
-        ax.set_ylim(0, max(sorted_values) + 1)
-        plt.subplots_adjust(bottom=0.2)
-
-        ax.set_ylabel('Ilość')
-        fig.patch.set_facecolor('none')
-        ax.set_facecolor('none')
-        ax.yaxis.set_major_locator(plt.MultipleLocator(1))
-        ax.spines['top'].set_visible(False)
-        ax.spines['right'].set_visible(False)
-        ax.spines['left'].set_linewidth(2)
-        ax.spines['bottom'].set_linewidth(2)
-
-        fig.savefig('plot.png', format='png', bbox_inches='tight')
-
-        pixmap = QPixmap('plot.png')
-
-        self.ui.lab_graph.setGeometry(0, 0, 938, 500)
-        self.ui.lab_graph.setAlignment(Qt.AlignCenter)
-
-        self.ui.lab_graph.setPixmap(pixmap)
-
-        os.remove('plot.png')
+        #os.remove('plot.html')

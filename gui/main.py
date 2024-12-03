@@ -2,6 +2,7 @@ import sys
 import matplotlib
 
 matplotlib.use("Qt5Agg")
+from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5 import uic, QtCore, QtGui
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap, QLinearGradient, QColor, QPalette, QBrush
@@ -16,6 +17,7 @@ import matplotlib.image as mpimg
 from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.ticker import MultipleLocator
+from datetime import datetime
 import random
 import json
 import os
@@ -71,6 +73,7 @@ class MainWindow(QMainWindow):
         self.ui.bn_new_2.clicked.connect(lambda: UIFunction.loadPhoto(self))
         self.ui.bn_analyze.clicked.connect(lambda: UIFunction.analyzePhoto(self))
         self.ui.bn_save.clicked.connect(lambda: UIFunction.savePhoto(self))
+        #self.ui.bn_sort.clicked.connect(lambda: UIFunction.toggleSortMode(self))
 
     def mousePressEvent(self, event):
         self.dragPos = event.globalPos()
