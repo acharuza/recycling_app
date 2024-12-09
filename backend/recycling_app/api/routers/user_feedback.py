@@ -1,10 +1,6 @@
 from fastapi import APIRouter, File, UploadFile, Depends
 from fastapi.responses import JSONResponse
 from starlette import status
-import os
-from recycling_app.constants import IMAGE_STORAGE_PATH
-import uuid
-from datetime import datetime
 from typing import Literal
 from recycling_app.api.constants import ALLOWED_LABELS, FILE_TYPES
 from recycling_app.database.database_manager import DatabaseManager
