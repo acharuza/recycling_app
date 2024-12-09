@@ -9,7 +9,7 @@ router = APIRouter()
 
 
 def get_db_manager() -> DatabaseManager:
-    from main import db_manager
+    from recycling_app.main import db_manager
 
     return db_manager
 
