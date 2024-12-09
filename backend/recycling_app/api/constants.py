@@ -11,4 +11,3 @@ ALLOWED_LABELS = (
 )
 
 FILE_TYPES = ["image/jpeg", "image/png"]
-TIMESTAMPT_FORMAT = "%Y-%m-%d_%H-%M-%S"
