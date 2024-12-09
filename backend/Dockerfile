@@ -13,6 +13,8 @@ COPY ./tests ./tests
 
 RUN pip install .
 
+RUN python -c "from torchvision import models; models.resnet101(weights=models.ResNet101_Weights.DEFAULT)"
+
 EXPOSE 8000
 
 CMD ["uvicorn", "recycling_app.main:app", "--host", "0.0.0.0", "--port", "8000"]
