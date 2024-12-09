@@ -1,6 +1,5 @@
 import os
-from recycling_app.database.constants import (
-    DATABASE_DIR_PATH,
+from recycling_app.constants import (
     IMAGE_LABELS,
     TIMESTAMP_FORMAT,
 )
@@ -9,16 +8,17 @@ import uuid
 
 class DatabaseManager:
 
-    def __init__(self):
-        if not os.path.exists(DATABASE_DIR_PATH):
-            os.makedirs(DATABASE_DIR_PATH)
+    def __init__(self, database_path):
+        self.database_path = database_path
+        if not os.path.exists(database_path):
+            os.makedirs(database_path)
             for label in IMAGE_LABELS:
-                os.makedirs(os.path.join(DATABASE_DIR_PATH, label))
+                os.makedirs(os.path.join(database_path, label))
 
     def save_image(self, img, img_format, label):
         timestamp = datetime.now().strftime(TIMESTAMP_FORMAT)
         file_name = f"{uuid.uuid4()}_{label}_{timestamp}.{img_format}"
-        file_path = os.path.join(DATABASE_DIR_PATH, label, file_name)
+        file_path = os.path.join(self.database_path, label, file_name)
         try:
             with open(file_path, "wb") as f:
                 f.write(img)
@@ -27,8 +27,8 @@ class DatabaseManager:
 
     def clear_database(self):
         for label in IMAGE_LABELS:
-            for file in os.listdir(os.path.join(DATABASE_DIR_PATH, label)):
-                file_path = os.path.join(DATABASE_DIR_PATH, label, file)
+            for file in os.listdir(os.path.join(self.database_path, label)):
+                file_path = os.path.join(self.database_path, label, file)
                 try:
                     os.remove(file_path)
                 except IOError as e:
