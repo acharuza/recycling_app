@@ -1,4 +1,5 @@
-from fastapi import APIRouter, File, UploadFile, Depends
+from fastapi import APIRouter, File, Depends
+from fastapi import UploadFile
 from fastapi.responses import JSONResponse
 from starlette import status
 from typing import Literal
@@ -26,13 +27,12 @@ async def user_feedback(
             content={"message": "Unsupported file type"},
         )
     try:
-        img = await file.read()
+        img = await read_file(file)
     except IOError as e:
         return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             content={"message": "Error reading image", "details": str(e)},
         )
-
     img_format = file.filename.split(".")[-1]
     try:
         db_manager.save_image(img, img_format, label)
@@ -45,3 +45,10 @@ async def user_feedback(
         status_code=status.HTTP_200_OK,
         content={"message": "Feedback received successfully"},
     )
+
+async def read_file(file: UploadFile):
+    try:
+        img = await file.read()
+    except IOError as e:
+        raise e
+    return img
