@@ -88,7 +88,11 @@ def test_user_feedback_wrong_label(override_get_db_manager, mock_file):
         ]
     }
 
-@patch("recycling_app.api.routers.user_feedback.read_file", side_effect=IOError("Error reading image"))
+
+@patch(
+    "recycling_app.api.routers.user_feedback.read_file",
+    side_effect=IOError("Error reading image"),
+)
 def test_user_feedback_error_reading_image(mock_read, override_get_db_manager):
     """Test user feedback with error reading image"""
     response = client.post(
@@ -103,6 +107,7 @@ def test_user_feedback_error_reading_image(mock_read, override_get_db_manager):
         "details": "Error reading image",
     }
     mock_read.assert_called_once()
+
 
 def test_user_feedback_db_save_error(override_get_db_manager, mock_file):
     """Test user feedback with error saving image"""

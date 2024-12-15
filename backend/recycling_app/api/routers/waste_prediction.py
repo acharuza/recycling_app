@@ -20,6 +20,11 @@ async def waste_prediction(
     file: UploadFile = File(...),
     model_manager: ModelManager = Depends(get_model_manager),
 ):
+    """
+    This endpoint is used to predict the type of waste in the image. It takes an image as input and returns the prediction and the probability of the prediction.
+    Image must be in one of the allowed formats.
+    Allowed formats: ['image/jpeg', 'image/png
+    """
     if file.content_type not in FILE_TYPES:
         return JSONResponse(
             status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
@@ -34,7 +39,6 @@ async def waste_prediction(
         )
     img = Image.open(img)
     model_response = model_manager.predict(img)
-    print(model_response)
 
     return JSONResponse(
         status_code=status.HTTP_200_OK,

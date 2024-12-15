@@ -6,9 +6,11 @@ from recycling_app.constants import (
 from datetime import datetime
 import uuid
 
+
 class DatabaseManager:
 
     def __init__(self, database_path):
+        """Class to manage the database of images"""
         self.database_path = database_path
         if not os.path.exists(database_path):
             os.makedirs(database_path)
@@ -33,7 +35,3 @@ class DatabaseManager:
                     os.remove(file_path)
                 except IOError as e:
                     raise IOError(f"Error deleting file: {str(e)}")
-
-
-if __name__ == '__main__':
-    DatabaseManager()

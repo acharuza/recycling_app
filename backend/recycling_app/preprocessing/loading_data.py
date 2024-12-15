@@ -1,6 +1,6 @@
 from torchvision import datasets
 from recycling_app.preprocessing.preprocessing import Preprocessor
-from torch.utils.data import DataLoader, random_split, Subset
+from torch.utils.data import DataLoader, random_split
 from torch import Generator
 
 
@@ -16,7 +16,7 @@ def create_data_loaders(
     train_dataset, val_dataset, test_dataset = _split_train_val_test(
         dataset, train_size, val_size, test_size, seed
     )
-    
+
     train_dataset.dataset.transform = preprocessor.transform_train
     val_dataset.dataset.transform = preprocessor.transform_test
     test_dataset.dataset.transform = preprocessor.transform_test
@@ -27,7 +27,9 @@ def create_data_loaders(
     return train_loader, val_loader, test_loader, dataset
 
 
-def _calculate_sizes(dataset: datasets.ImageFolder, split_ratio: float) -> tuple[int, int, int]:
+def _calculate_sizes(
+    dataset: datasets.ImageFolder, split_ratio: float
+) -> tuple[int, int, int]:
     test_size = int((1 - split_ratio) * len(dataset))
     train_val_size = len(dataset) - test_size
     train_size = int(split_ratio * train_val_size)

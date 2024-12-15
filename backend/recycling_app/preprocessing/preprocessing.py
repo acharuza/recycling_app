@@ -32,11 +32,14 @@ class Preprocessor:
                 v2.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
             ]
         )
-    
+
     def remove_alpha(self, img, background_color=(255, 255, 255)):
-        if img.mode in ("RGBA", "LA") or (img.mode == "P" and "transparency" in img.info):
+        """Remove alpha channel from image and replace with background color"""
+        if img.mode in ("RGBA", "LA") or (
+            img.mode == "P" and "transparency" in img.info
+        ):
             background = Image.new("RGB", img.size, background_color)
-            background.paste(img, mask=img.getchannel("A"))  # Nakładanie z kanałem alfa
+            background.paste(img, mask=img.getchannel("A"))
             return background
         else:
             return img.convert("RGB")

@@ -21,6 +21,12 @@ async def user_feedback(
     file: UploadFile = File(...),
     db_manager: DatabaseManager = Depends(get_db_manager),
 ):
+    """
+    This endpoint receives user feedback in the form of an image and a label. The image and label are saved to the database for later use.
+    The label must be one of the allowed labels, and the image must be of an allowed file type.
+    Allowed labels: "cardboard", "food_organics", "glass", "metal", "paper", "plastic", "textile", "trash", "vegetation"
+    Allowed file types: image/jpeg, image/png
+    """
     if file.content_type not in FILE_TYPES:
         return JSONResponse(
             status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
@@ -46,7 +52,9 @@ async def user_feedback(
         content={"message": "Feedback received successfully"},
     )
 
+
 async def read_file(file: UploadFile):
+    """Wrapper function to read the image file"""
     try:
         img = await file.read()
     except IOError as e:

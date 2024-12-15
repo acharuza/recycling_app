@@ -7,7 +7,8 @@ from PIL import Image
 
 with patch("recycling_app.model.model_manager.ModelManager", MagicMock()) as mock_model:
     from recycling_app.main import app
-    mock_model.return_value.predict.return_value = ('glass', 0.9)
+
+    mock_model.return_value.predict.return_value = ("glass", 0.9)
 
 client = TestClient(app)
 
@@ -30,41 +31,40 @@ def mock_file():
 
 # tests
 
+
 @pytest.mark.parametrize("filetype", ["jpeg", "png"])
 def test_waste_prediction_success(mocker, mock_file, filetype):
     """Test waste prediction success"""
     fake_image = Image.new("RGB", (100, 100), color="white")
-    mocker.patch("recycling_app.api.routers.waste_prediction.Image.open", return_value=fake_image)
+    mocker.patch(
+        "recycling_app.api.routers.waste_prediction.Image.open", return_value=fake_image
+    )
     file = mock_file(
         filename=f"test_image.{filetype.replace('e', '')}",
         mime_type=f"image/{filetype}",
     )
     print(file)
-    response = client.post(
-        "/waste_prediction",
-        files=file
-    )
+    response = client.post("/waste_prediction", files=file)
     assert response.status_code == 200
+
 
 def test_waste_prediction_unsupported_file_type(mock_file):
     """Test waste prediction with unsupported file type"""
     file = mock_file(mime_type="application/json")
-    response = client.post(
-        "/waste_prediction",
-        files=file
-    )
+    response = client.post("/waste_prediction", files=file)
     assert response.status_code == 415
+
 
 def test_waste_prediction_error_reading_image(mocker, mock_file):
     """Test waste prediction with error reading image"""
-    mocker.patch("recycling_app.api.routers.waste_prediction.BytesIO", side_effect=IOError("I/O operation on closed file."))
-    file = mock_file()
-    response = client.post(
-        "/waste_prediction",
-        files=file
+    mocker.patch(
+        "recycling_app.api.routers.waste_prediction.BytesIO",
+        side_effect=IOError("I/O operation on closed file."),
     )
+    file = mock_file()
+    response = client.post("/waste_prediction", files=file)
     assert response.status_code == 500
     assert response.json() == {
         "message": "Error reading image",
-        "details": "I/O operation on closed file."
+        "details": "I/O operation on closed file.",
     }
