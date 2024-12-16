@@ -1177,6 +1177,9 @@ QPushButton:pressed {
                      <height>16777215</height>
                     </size>
                    </property>
+                   <property name="styleSheet">
+                    <string notr="true"/>
+                   </property>
                    <property name="frameShape">
                     <enum>QFrame::NoFrame</enum>
                    </property>
@@ -1468,8 +1471,8 @@ QPushButton:pressed {
                          <rect>
                           <x>0</x>
                           <y>0</y>
-                          <width>350</width>
-                          <height>588</height>
+                          <width>351</width>
+                          <height>591</height>
                          </rect>
                         </property>
                         <property name="frameShape">
@@ -1492,7 +1495,7 @@ QPushButton:pressed {
                           <number>0</number>
                          </property>
                          <item>
-                          <widget class="QLabel" name="label_2">
+                          <widget class="QLabel" name="lab_form_hed">
                            <property name="minimumSize">
                             <size>
                              <width>0</width>
@@ -1512,14 +1515,17 @@ QPushButton:pressed {
                             </size>
                            </property>
                            <property name="styleSheet">
-                            <string notr="true">QLabel {
-	border-top-left-radius: 25%;
-    border-top-right-radius: 25%;
-	background-color: rgb(46, 125, 50);
-}</string>
+                            <string notr="true">color: white; 
+border-top-left-radius: 25%;
+border-top-right-radius: 25%;
+background-color: rgb(46, 125, 50);
+font-size: 22px;</string>
                            </property>
                            <property name="text">
-                            <string/>
+                            <string>Wybierz prawidłowy materiał</string>
+                           </property>
+                           <property name="alignment">
+                            <set>Qt::AlignCenter</set>
                            </property>
                            <property name="indent">
                             <number>-1</number>
@@ -1527,19 +1533,122 @@ QPushButton:pressed {
                           </widget>
                          </item>
                          <item>
-                          <widget class="QLabel" name="label">
+                          <widget class="QGroupBox" name="groupBox">
                            <property name="styleSheet">
-                            <string notr="true">QLabel {
+                            <string notr="true">
     padding: 10px;
 	background-color: rgb(200, 230, 201);
 	border-bottom-left-radius: 25%;
     border-bottom-right-radius: 25%;
-}
 </string>
                            </property>
-                           <property name="text">
+                           <property name="title">
                             <string/>
                            </property>
+                           <layout class="QVBoxLayout" name="verticalLayout_10">
+                            <property name="topMargin">
+                             <number>5</number>
+                            </property>
+                            <item>
+                             <widget class="QRadioButton" name="bn_paper">
+                              <property name="styleSheet">
+                               <string notr="true">font-family: 'Inter', sans-serif;
+    font-size: 18px;</string>
+                              </property>
+                              <property name="text">
+                               <string>Papier</string>
+                              </property>
+                             </widget>
+                            </item>
+                            <item>
+                             <widget class="QRadioButton" name="bn_cardboard">
+                              <property name="styleSheet">
+                               <string notr="true">font-family: 'Inter', sans-serif;
+    font-size: 18px;</string>
+                              </property>
+                              <property name="text">
+                               <string>Karton</string>
+                              </property>
+                             </widget>
+                            </item>
+                            <item>
+                             <widget class="QRadioButton" name="bn_plastic">
+                              <property name="styleSheet">
+                               <string notr="true">font-family: 'Inter', sans-serif;
+    font-size: 18px;</string>
+                              </property>
+                              <property name="text">
+                               <string>Plastik</string>
+                              </property>
+                             </widget>
+                            </item>
+                            <item>
+                             <widget class="QRadioButton" name="bn_metal">
+                              <property name="styleSheet">
+                               <string notr="true">font-family: 'Inter', sans-serif;
+    font-size: 18px;</string>
+                              </property>
+                              <property name="text">
+                               <string>Metal</string>
+                              </property>
+                             </widget>
+                            </item>
+                            <item>
+                             <widget class="QRadioButton" name="bn_glass">
+                              <property name="styleSheet">
+                               <string notr="true">font-family: 'Inter', sans-serif;
+    font-size: 18px;</string>
+                              </property>
+                              <property name="text">
+                               <string>Szkło</string>
+                              </property>
+                             </widget>
+                            </item>
+                            <item>
+                             <widget class="QRadioButton" name="bn_textile">
+                              <property name="styleSheet">
+                               <string notr="true">font-family: 'Inter', sans-serif;
+    font-size: 18px;</string>
+                              </property>
+                              <property name="text">
+                               <string>Tekstylia</string>
+                              </property>
+                             </widget>
+                            </item>
+                            <item>
+                             <widget class="QRadioButton" name="bn_organic_food">
+                              <property name="styleSheet">
+                               <string notr="true">font-family: 'Inter', sans-serif;
+    font-size: 18px;</string>
+                              </property>
+                              <property name="text">
+                               <string>Organiczne</string>
+                              </property>
+                             </widget>
+                            </item>
+                            <item>
+                             <widget class="QRadioButton" name="bn_vegetation">
+                              <property name="styleSheet">
+                               <string notr="true">font-family: 'Inter', sans-serif;
+    font-size: 18px;</string>
+                              </property>
+                              <property name="text">
+                               <string>Zielone</string>
+                              </property>
+                             </widget>
+                            </item>
+                            <item>
+                             <widget class="QRadioButton" name="radioButton_9">
+                              <property name="styleSheet">
+                               <string notr="true">font-family: 'Inter', sans-serif;
+    font-size: 18px;</string>
+                              </property>
+                              <property name="text">
+                               <string>Zmieszane</string>
+                              </property>
+                             </widget>
+                            </item>
+                           </layout>
                           </widget>
                          </item>
                         </layout>
@@ -1549,7 +1658,7 @@ QPushButton:pressed {
                          <rect>
                           <x>0</x>
                           <y>588</y>
-                          <width>350</width>
+                          <width>341</width>
                           <height>115</height>
                          </rect>
                         </property>
@@ -1568,19 +1677,49 @@ QPushButton:pressed {
                         <property name="frameShadow">
                          <enum>QFrame::Raised</enum>
                         </property>
-                        <widget class="QPushButton" name="pushButton">
-                         <property name="geometry">
-                          <rect>
-                           <x>40</x>
-                           <y>50</y>
-                           <width>93</width>
-                           <height>28</height>
-                          </rect>
-                         </property>
-                         <property name="text">
-                          <string>PushButton</string>
-                         </property>
-                        </widget>
+                        <layout class="QHBoxLayout" name="horizontalLayout_25">
+                         <item alignment="Qt::AlignLeft">
+                          <widget class="QPushButton" name="bn_back">
+                           <property name="styleSheet">
+                            <string notr="true">border: none;
+</string>
+                           </property>
+                           <property name="text">
+                            <string/>
+                           </property>
+                           <property name="icon">
+                            <iconset>
+                             <normaloff>C:/Users/marty/Downloads/icons8-back-100 (1).png</normaloff>C:/Users/marty/Downloads/icons8-back-100 (1).png</iconset>
+                           </property>
+                           <property name="iconSize">
+                            <size>
+                             <width>64</width>
+                             <height>64</height>
+                            </size>
+                           </property>
+                          </widget>
+                         </item>
+                         <item alignment="Qt::AlignRight">
+                          <widget class="QPushButton" name="bn_send">
+                           <property name="styleSheet">
+                            <string notr="true">border: None;</string>
+                           </property>
+                           <property name="text">
+                            <string/>
+                           </property>
+                           <property name="icon">
+                            <iconset>
+                             <normaloff>C:/Users/marty/Downloads/icons8-tick-mark-100 (1).png</normaloff>C:/Users/marty/Downloads/icons8-tick-mark-100 (1).png</iconset>
+                           </property>
+                           <property name="iconSize">
+                            <size>
+                             <width>64</width>
+                             <height>64</height>
+                            </size>
+                           </property>
+                          </widget>
+                         </item>
+                        </layout>
                        </widget>
                       </widget>
                      </widget>

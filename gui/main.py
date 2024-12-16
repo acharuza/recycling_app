@@ -22,9 +22,9 @@ class MainWindow(QMainWindow):
         self.ui = uic.loadUi("ui_main.ui", self)
 
         # Setting window title
-        applicationName = "Recycle App"
-        self.setWindowTitle(applicationName)
-        UIFunction.label_title(self, applicationName)
+        application_name = "Recycle App"
+        self.setWindowTitle(application_name)
+        UIFunction.label_title(self, application_name)
 
         # Initilize stacked widget
         UIFunction.init_stack_tab(self)
@@ -32,14 +32,11 @@ class MainWindow(QMainWindow):
         # Initialize max, min, close of the title bar
         UIFunction.constant_function(self)
 
-        UIFunction.stack_page(self)
+        UIFunction.stats_page(self)
 
         # Menu buttons
         self.ui.bn_home.clicked.connect(lambda: UIFunction.button_pressed(self, 'bn_home'))
-        self.ui.bn_stats.clicked.connect(lambda: (
-            UIFunction.button_pressed(self, 'bn_stats'),
-            UIFunction.stats_page(self)
-        ))
+        self.ui.bn_stats.clicked.connect(lambda: UIFunction.button_pressed(self, 'bn_stats'))
 
         # Used for stacked widgets
         UIFunction.stack_page(self)
@@ -58,6 +55,7 @@ class MainWindow(QMainWindow):
                 self.dragPos = event.globalPos()
                 event.accept()
 
+
         # buttons
         self.ui.bn_report.setVisible(False)
         self.ui.bn_like.setVisible(False)
@@ -65,12 +63,14 @@ class MainWindow(QMainWindow):
         self.ui.bn_load_photo.clicked.connect(lambda: UIFunction.load_photo(self))
         self.ui.bn_new.clicked.connect(lambda: UIFunction.load_photo(self))
         self.ui.bn_new_2.clicked.connect(lambda: UIFunction.load_photo(self))
-        self.ui.bn_analyze.clicked.connect(lambda: UIFunction.analyze_photo(self))
+        self.ui.bn_analyze.clicked.connect(lambda: UIFunction.waste_category(self))
         self.ui.bn_save.clicked.connect(lambda: UIFunction.save_photo(self))
-        # self.ui.bn_sort.clicked.connect(lambda: UIFunction.toggleSortMode(self))
+        self.ui.bn_like.clicked.connect(lambda: UIFunction.send_positive_feedback(self))
+        self.ui.bn_report.clicked.connect(lambda: UIFunction.choose_feedback(self))
+        self.ui.bn_send.clicked.connect(lambda: UIFunction.send_negative_feedback(self))
+        self.ui.bn_back.clicked.connect(lambda: UIFunction.desc_view(self))
+        #self.ui.bn_sort.clicked.connect(lambda: UIFunction.toggleSortMode(self))
 
-        # bn_like - przycisk do pozytywnego feedbacku
-        # bn_report - przycisk do negatywnego feedbacku
 
     def mouse_press_event(self, event):
         self.dragPos = event.globalPos()

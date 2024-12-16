@@ -1,7 +1,11 @@
 from PyQt5.QtCore import QUrl
+from PyQt5.QtWidgets import QRadioButton
+import requests
+import mimetypes
 import plotly.graph_objects as go
 
 from main import *
+from constants import *
 
 GLOBAL_STATE = 0  # checking if the window is full screen or not
 GLOBAL_TITLE_BAR = True
@@ -9,7 +13,6 @@ init = False  # for initition of the window
 
 
 class UIFunction(MainWindow):
-    sort_mode = 'quantity'
 
     def init_stack_tab(self):
         global init
@@ -107,6 +110,16 @@ class UIFunction(MainWindow):
             self.ui.stackedWidget.setCurrentWidget(self.ui.page_stats)
             self.ui.bn_stats.setStyleSheet(active_button_style)
 
+    def load_waste_data():
+        if UIFunction.waste_desc is None:
+            try:
+                with open("waste_desc.json", "r", encoding="utf-8") as file:
+                    UIFunction.waste_desc = json.load(file)
+            except Exception as e:
+                QMessageBox.warning(None, "Błąd", f"Nie udało się odczytać pliku JSON: {e}")
+                UIFunction.waste_desc = {}
+        return UIFunction.waste_desc
+
     def load_photo(self):
         # function for loading photos
         file_path, _ = QFileDialog.getOpenFileName(self, "Wybierz zdjęcie", "", "Images (*.png *.jpg *.jpeg *.bmp)")
@@ -126,23 +139,40 @@ class UIFunction(MainWindow):
         else:
             QMessageBox.information(self, "Brak pliku", "Nie wybrano żadnego pliku.")
 
-    def analyze_photo(self):
-        # function for analyzing photos
-
-        try:
-            with open("waste_desc.json", "r", encoding="utf-8") as file:
-                waste_data = json.load(file)
-        except Exception as e:
-            QMessageBox.warning(self, "Błąd", f"Nie udało się odczytać pliku JSON: {e}")
+    def predict_category(self):
+        #
+        if not hasattr(self, 'selected_file_path') or not self.selected_file_path:
+            QMessageBox.warning(self, "Brak zdjęcia", "Nie wybrano zdjęcia. Proszę najpierw załadować zdjęcie.")
             return
 
-        # --------------- #losowy wybór kategorii z dostępnych jako analiza zdjęcia
-        categories = list(waste_data.keys())
-        category = random.choice(categories)
-        self.category = category
-        # ------------------
+        url = f"{URL}waste_prediction"
 
-        category_info = waste_data.get(category)
+        with open(self.selected_file_path, "rb") as file:
+            mime_type, _ = mimetypes.guess_type(self.selected_file_path)
+            files = {"file": (self.selected_file_path, file, mime_type)}
+            try:
+                response = requests.post(url, files=files, timeout=5)
+                if response.status_code == 200:
+                    prediction = response.json().get("prediction")
+                    return prediction
+                else:
+                    QMessageBox.warning(self, "Błąd", f"Serwer zwrócił błąd: {response.status_code} - {response.text}")
+            except requests.exceptions.Timeout:
+                QMessageBox.warning(self, "Błąd", "Serwer nie odpowiada. Proszę spróbować ponownie później.")
+            except Exception as e:
+                QMessageBox.warning(self, "Błąd", f"Nie udało się połączyć z serwerem: {str(e)}")
+                return None
+
+    def analyze_photo(self, prediction):
+        # function for showing result in UI
+
+        self.category = prediction
+        UIFunction.set_waste_description(self)
+        self.ui.bn_like.setEnabled(True)
+        self.ui.bn_report.setEnabled(True)
+
+    def set_waste_description(self):
+        category_info = WASTE_DESC.get(self.category)
         description = category_info.get("description", "Brak opisu")
         file_path = category_info.get("icon_big", "")
 
@@ -170,6 +200,7 @@ class UIFunction(MainWindow):
                 self.ui.stackedWidget_2.setCurrentWidget(self.ui.page_save)
                 self.ui.bn_report.setVisible(True)
                 self.ui.bn_like.setVisible(True)
+                self.ui.bn_like.setIcon(QtGui.QIcon("icons/like.png"))
             else:
                 QMessageBox.warning(self, "Błąd", "Nie udało się załadować obrazu.")
 
@@ -197,6 +228,8 @@ class UIFunction(MainWindow):
                 QMessageBox.critical(self, "Błąd zapisu", f"Nie udało się zapisać: {e}")
         else:
             QMessageBox.warning(self, "Brak danych", "Nie wybrano pliku do zapisania.")
+
+        UIFunction.stats_page(self)
 
     def stats_page(self):
         with open('image_base.json', 'r') as file:
@@ -249,3 +282,65 @@ class UIFunction(MainWindow):
         self.ui.web_view.setUrl(url)
 
         # os.remove('plot.html')
+
+    def waste_category(self):
+        prediction = UIFunction.predict_category(self)
+        UIFunction.analyze_photo(self, prediction)
+
+    def send_feedback(self):
+
+        url = f"{URL}user_feedback?label={self.category}"
+
+        with open(self.selected_file_path, "rb") as file:
+            mime_type, _ = mimetypes.guess_type(self.selected_file_path)
+            mime_type = mime_type or "image/jpeg"
+            files = {"file": (self.selected_file_path, file, mime_type)}
+
+            try:
+                response = requests.post(url, files=files)
+                if response.status_code == 200:
+                    print(f"Feedback sent: {response.json()}")
+                    self.ui.bn_like.setToolTip("Przesłano potwierdzenie kategorii")
+                    self.ui.bn_like.setEnabled(False)
+                    self.ui.bn_like.setIcon(QtGui.QIcon("icons/like_green.png"))
+
+                else:
+                    QMessageBox.warning(self, "Błąd", f"Serwer zwrócił błąd: {response.status_code} - {response.text}")
+            except Exception as e:
+                QMessageBox.critical(self, "Błąd", f"Nie udało się połączyć z serwerem: {str(e)}")
+
+    def send_positive_feedback(self):
+        if not hasattr(self, 'selected_file_path') or not self.selected_file_path:
+            QMessageBox.warning(self, "Brak zdjęcia", "Nie wybrano zdjęcia. Proszę najpierw załadować zdjęcie.")
+            return
+
+        if not hasattr(self, 'category') or not self.category:
+            QMessageBox.warning(self, "Brak kategorii", "Nie określono kategorii. Wykonaj analizę zdjęcia.")
+            return
+
+        UIFunction.send_feedback(self)
+
+        self.ui.bn_report.setEnabled(False)
+
+    def choose_feedback(self):
+        self.ui.stackedWidget_desc.setCurrentWidget(self.ui.page_form)
+
+    def send_negative_feedback(self):
+        for button in self.groupBox.findChildren(QRadioButton):
+            if button.isChecked():
+                name = button.text()
+                x = WASTE_DESC.items()
+                for key, value in WASTE_DESC.items():
+                    print(value)
+                    if value.get('name') == name:
+                        self.category = key
+
+        UIFunction.send_feedback(self)
+
+        UIFunction.set_waste_description(self)
+        self.ui.stackedWidget_desc.setCurrentWidget(self.page_desc)
+        self.ui.bn_like.setEnabled(False)
+        self.ui.bn_report.setEnabled(False)
+
+    def desc_view(self):
+        self.ui.stackedWidget_desc.setCurrentWidget(self.ui.page_desc)
