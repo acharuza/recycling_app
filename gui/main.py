@@ -1,51 +1,53 @@
 import sys
+import matplotlib
+from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5 import uic, QtCore, QtGui
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap, QLinearGradient, QColor, QPalette, QBrush
 from PyQt5.QtCore import QPropertyAnimation
-from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton, QLabel, QWidget, QFrame, QFileDialog, QMessageBox, QVBoxLayout
+from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton, QLabel, QWidget, QFrame, QFileDialog, QMessageBox, \
+    QVBoxLayout
 from PyQt5.QtGui import QFont
 from ui_function import *
-from collections import Counter
 import random
 import json
-import os
+
 
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
         self.ui = uic.loadUi("ui_main.ui", self)
+        ###
+        self.ui_function = UIFunction()
+        self.ui_function.ui = self.ui
+        ###
+        # Setting window title
+        application_name = "Recycle App"
+        self.setWindowTitle(application_name)
+        UIFunction.label_title(self, application_name)
 
-        #Setting window title
-        applicationName = "Recycle App"
-        self.setWindowTitle(applicationName)
-        UIFunction.labelTitle(self, applicationName)
+        # Initilize stacked widget
+        UIFunction.init_stack_tab(self)
 
-        #Initilize stacked widget
-        UIFunction.initStackTab(self)
+        # Initialize max, min, close of the title bar
+        UIFunction.constant_function(self)
 
-        #Initialize max, min, close of the title bar
-        UIFunction.constantFunction(self)
+        UIFunction.stats_page(self)
 
-        UIFunction.stackPage(self)
+        # Menu buttons
+        self.ui.bn_home.clicked.connect(lambda: UIFunction.button_pressed(self, 'bn_home'))
+        self.ui.bn_stats.clicked.connect(lambda: UIFunction.button_pressed(self, 'bn_stats'))
 
-        #Menu buttons
-        self.ui.bn_home.clicked.connect(lambda: UIFunction.buttonPressed(self, 'bn_home'))
-        self.ui.bn_stats.clicked.connect(lambda: (
-            UIFunction.buttonPressed(self, 'bn_stats'),
-            UIFunction.statsPage(self)
-        ))
+        # Used for stacked widgets
+        UIFunction.stack_page(self)
 
-        #Used for stacked widgets
-        UIFunction.stackPage(self)
-
-        #Used for moving window
+        # Used for moving window
         self.dragPos = self.pos()
 
-        def moveWindow(event):
+        def move_window(event):
             # if maximized back to normal
-            if UIFunction.returnStatus() == 1:
+            if UIFunction.return_status() == 1:
                 UIFunction.maximize_restore(self)
 
             # move window
@@ -55,19 +57,27 @@ class MainWindow(QMainWindow):
                 event.accept()
 
 
-        self.ui.frame_appname.mouseMoveEvent = moveWindow
-        self.ui.bn_load_photo.clicked.connect(lambda: UIFunction.loadPhoto(self))
-        self.ui.bn_new.clicked.connect(lambda: UIFunction.loadPhoto(self))
-        self.ui.bn_new_2.clicked.connect(lambda: UIFunction.loadPhoto(self))
-        self.ui.bn_analyze.clicked.connect(lambda: UIFunction.analyzePhoto(self))
-        self.ui.bn_save.clicked.connect(lambda: UIFunction.savePhoto(self))
+        # buttons
+        self.ui.bn_report.setVisible(False)
+        self.ui.bn_like.setVisible(False)
+        self.ui.frame_appname.mouseMoveEvent = move_window
+        self.ui.bn_load_photo.clicked.connect(lambda: UIFunction.load_photo(self))
+        self.ui.bn_new.clicked.connect(lambda: UIFunction.load_photo(self))
+        self.ui.bn_new_2.clicked.connect(lambda: UIFunction.load_photo(self))
+        self.ui.bn_analyze.clicked.connect(lambda: UIFunction.waste_category(self))
+        self.ui.bn_save.clicked.connect(lambda: UIFunction.save_photo(self))
+        self.ui.bn_like.clicked.connect(lambda: UIFunction.send_positive_feedback(self))
+        self.ui.bn_report.clicked.connect(lambda: UIFunction.choose_feedback(self))
+        self.ui.bn_send.clicked.connect(lambda: UIFunction.send_negative_feedback(self))
+        self.ui.bn_back.clicked.connect(lambda: UIFunction.desc_view(self))
+        self.ui.bn_sort.clicked.connect(lambda: UIFunction.toggle_sort_and_refresh(self))
+        self.ui.bn_reset.clicked.connect(lambda: UIFunction.reset_data(self))
 
-        
 
 
-    def mousePressEvent(self, event):
+
+    def mouse_press_event(self, event):
         self.dragPos = event.globalPos()
-
 
 
 if __name__ == "__main__":
