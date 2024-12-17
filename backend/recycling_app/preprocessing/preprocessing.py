@@ -11,7 +11,6 @@ class Preprocessor:
         self.transform_train = v2.Compose(
             [
                 v2.ToImage(),
-                v2.Lambda(lambda x: self.remove_alpha(x)),
                 v2.ToDtype(torch.uint8, scale=True),
                 v2.Grayscale(num_output_channels=3),
                 v2.GaussianBlur(kernel_size=5, sigma=(0.1, 2.0)),
@@ -24,7 +23,6 @@ class Preprocessor:
         self.transform_test = v2.Compose(
             [
                 v2.ToImage(),
-                v2.Lambda(lambda x: self.remove_alpha(x)),
                 v2.ToDtype(torch.uint8, scale=True),
                 v2.Grayscale(num_output_channels=3),
                 v2.Resize(size=(224, 224), antialias=True),
@@ -33,13 +31,3 @@ class Preprocessor:
             ]
         )
 
-    def remove_alpha(self, img, background_color=(255, 255, 255)):
-        """Remove alpha channel from image and replace with background color"""
-        if img.mode in ("RGBA", "LA") or (
-            img.mode == "P" and "transparency" in img.info
-        ):
-            background = Image.new("RGB", img.size, background_color)
-            background.paste(img, mask=img.getchannel("A"))
-            return background
-        else:
-            return img.convert("RGB")
