@@ -7,6 +7,7 @@ from recycling_app.constants import (
     FEATURE_EXTRACTOR_RESNET152,
     FEATURE_EXTRACTOR_VGG19,
 )
+import torch
 
 
 class ModelManager:
@@ -35,5 +36,6 @@ class ModelManager:
             "vgg19": features_vgg19,
         }
         pred, prob = self.model.predict(input)
+        prob = torch.max(prob, 1).values.item()
         label = IMAGE_LABELS[pred]
-        return label, prob.item()
+        return label, prob

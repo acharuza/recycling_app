@@ -15,6 +15,5 @@ class SoftVoting:
 
         avg_output = torch.stack([0.4*prob_resnet101, 0.4*prob_resnet152, 0.2*prob_vgg19]).sum(dim=0)
         _, predicted = torch.max(avg_output, 1)
-        probabilities = torch.max(avg_output, 1).values
-        return predicted, probabilities
+        return predicted, avg_output
 
