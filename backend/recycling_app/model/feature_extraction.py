@@ -38,3 +38,9 @@ class FeatureExtractor:
                 features.append(output.cpu().numpy())
                 labels.append(targets.numpy())
         return np.vstack(features), np.hstack(labels)
+
+    def extract_features_pred(self, image) -> np.ndarray:
+        with torch.no_grad():
+            image = image.unsqueeze(0).to(self.device)
+            output = self.model(image).squeeze()
+        return output.cpu().numpy()

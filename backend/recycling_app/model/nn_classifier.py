@@ -6,24 +6,21 @@ from tqdm import tqdm
 
 class NNClassifier:
 
-    def __init__(self, input_size, hidden_size, output_size, dropout=0.5):
+    def __init__(self, input_size, hidden_size, output_size):
         self.model = nn.Sequential(
             nn.Linear(input_size, hidden_size),
             nn.ReLU(),
-            nn.Dropout(dropout),
             nn.Linear(hidden_size, hidden_size),
             nn.ReLU(),
-            nn.Dropout(dropout),
             nn.Linear(hidden_size, hidden_size),
             nn.ReLU(),
-            nn.Dropout(dropout),
             nn.Linear(hidden_size, output_size),
         )
         self.criterion = nn.CrossEntropyLoss()
         self.optimizer = optim.Adam(self.model.parameters())
-        self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.model.to(self.device)
-    
+
     def fit(self, X, y, epochs, lr, X_val=None, y_val=None):
         if X_val is not None and y_val is not None:
             early_stopping = EarlyStopping(patience=5, min_delta=0)
@@ -47,7 +44,9 @@ class NNClassifier:
                 running_loss += loss.item()
             avg_train_loss = running_loss / len(X)
             train_loss_history.append(avg_train_loss)
-            tqdm_epochs.set_description(f'Epoch {epoch + 1}/{epochs}, Avg Train Loss: {avg_train_loss}')
+            tqdm_epochs.set_description(
+                f"Epoch {epoch + 1}/{epochs}, Avg Train Loss: {avg_train_loss}"
+            )
 
             if X_val is not None and y_val is not None:
                 val_loss = 0.0
@@ -60,19 +59,22 @@ class NNClassifier:
                 val_loss_history.append(avg_val_loss)
                 early_stopping(avg_val_loss)
                 if early_stopping.early_stop:
-                    print(f'Early stopping at epoch {epoch + 1}')
+                    print(f"Early stopping at epoch {epoch + 1}")
                     break
-        return train_loss_history, val_loss_history if X_val is not None and y_val is not None else train_loss_history
-
-
+        return train_loss_history, (
+            val_loss_history
+            if X_val is not None and y_val is not None
+            else train_loss_history
+        )
 
     def predict(self, x):
         x = torch.from_numpy(x).float().to(self.device)
         logits = self.model(x)
+        logits = logits.unsqueeze(0) if len(logits.shape) == 1 else logits
         probabilities = torch.softmax(logits, dim=1)
         predictions = torch.argmax(probabilities, dim=1)
         return predictions, probabilities
-    
+
 
 class EarlyStopping:
 

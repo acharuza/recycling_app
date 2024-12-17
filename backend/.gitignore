@@ -2,6 +2,11 @@
 data/
 !data/.gitkeep
 
+.vscode/
+settings.json
+
+db/
+!db/.gitkeep
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

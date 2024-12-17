@@ -2,6 +2,7 @@ from torchvision.transforms import v2
 import torch
 from typing import Union
 from io import BytesIO
+from PIL import Image
 
 
 class Preprocessor:
@@ -29,3 +30,4 @@ class Preprocessor:
                 v2.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
             ]
         )
+

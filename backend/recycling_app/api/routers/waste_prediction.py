@@ -1,15 +1,30 @@
-from fastapi import APIRouter, File, UploadFile
+from fastapi import APIRouter, File, UploadFile, Depends
 from fastapi.responses import JSONResponse
 from starlette import status
 from io import BytesIO
 from recycling_app.api.constants import FILE_TYPES
 from PIL import Image
+from recycling_app.model.model_manager import ModelManager
 
 router = APIRouter()
 
 
+def get_model_manager() -> ModelManager:
+    from recycling_app.main import model_manager
+
+    return model_manager
+
+
 @router.post("/waste_prediction")
-async def waste_prediction(file: UploadFile = File(...)):
+async def waste_prediction(
+    file: UploadFile = File(...),
+    model_manager: ModelManager = Depends(get_model_manager),
+):
+    """
+    This endpoint is used to predict the type of waste in the image. It takes an image as input and returns the prediction and the probability of the prediction.
+    Image must be in one of the allowed formats.
+    Allowed formats: ['image/jpeg', 'image/png
+    """
     if file.content_type not in FILE_TYPES:
         return JSONResponse(
             status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
@@ -23,16 +38,9 @@ async def waste_prediction(file: UploadFile = File(...)):
             content={"message": "Error reading image", "details": str(e)},
         )
     img = Image.open(img)
-    # showing image to prove that it's been sent
-    img.show()
-    model_response = mock_model_response(img)
+    model_response = model_manager.predict(img)
 
     return JSONResponse(
         status_code=status.HTTP_200_OK,
-        content={"prediction": model_response},
+        content={"prediction": model_response[0], "probability": model_response[1]},
     )
-
-
-# mock_model_response is used to simulate the response of a machine learning model.
-def mock_model_response(img: Image.Image) -> str:
-    return "paper"
