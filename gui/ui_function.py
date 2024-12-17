@@ -3,6 +3,9 @@ from PyQt5.QtWidgets import QRadioButton
 import requests
 import mimetypes
 import plotly.graph_objects as go
+from collections import Counter
+import os
+from datetime import datetime
 
 from main import *
 from constants import *
@@ -12,7 +15,8 @@ GLOBAL_TITLE_BAR = True
 init = False  # for initition of the window
 
 
-class UIFunction(MainWindow):
+class UIFunction():
+    sort_state = False
 
     def init_stack_tab(self):
         global init
@@ -110,16 +114,6 @@ class UIFunction(MainWindow):
             self.ui.stackedWidget.setCurrentWidget(self.ui.page_stats)
             self.ui.bn_stats.setStyleSheet(active_button_style)
 
-    def load_waste_data():
-        if UIFunction.waste_desc is None:
-            try:
-                with open("waste_desc.json", "r", encoding="utf-8") as file:
-                    UIFunction.waste_desc = json.load(file)
-            except Exception as e:
-                QMessageBox.warning(None, "Błąd", f"Nie udało się odczytać pliku JSON: {e}")
-                UIFunction.waste_desc = {}
-        return UIFunction.waste_desc
-
     def load_photo(self):
         # function for loading photos
         file_path, _ = QFileDialog.getOpenFileName(self, "Wybierz zdjęcie", "", "Images (*.png *.jpg *.jpeg *.bmp)")
@@ -131,9 +125,10 @@ class UIFunction(MainWindow):
             self.selected_file_path = file_path
             self.ui.lab_home_hed.setText("")
             self.ui.lab_desc_text.setText("Analizuj obraz, aby poznać kategorię odpadu lub wczytaj nowy.")
-            self.ui.lab_desc_photo.setPixmap(QPixmap())
+            self.ui.lab_desc_photo.clear()
             self.ui.bn_report.setVisible(False)
             self.ui.bn_like.setVisible(False)
+            self.ui.bn_save.setEnabled(True)
             self.ui.stackedWidget_2.setCurrentWidget(self.ui.page_change_save)
 
         else:
@@ -229,6 +224,7 @@ class UIFunction(MainWindow):
         else:
             QMessageBox.warning(self, "Brak danych", "Nie wybrano pliku do zapisania.")
 
+        self.ui.bn_save.setEnabled(False)
         UIFunction.stats_page(self)
 
     def stats_page(self):
@@ -238,14 +234,11 @@ class UIFunction(MainWindow):
         categories = list(data.values())
         category_counts = Counter(categories)
 
-        with open('waste_desc.json', 'r') as file:
-            waste_data = json.load(file)
-
-        key_to_name = {key: value['name'] for key, value in waste_data.items()}
+        key_to_name = {key: value['name'] for key, value in WASTE_DESC.items()}
         most_common_categories = [(key_to_name[key], count) for key, count in category_counts.most_common(3)]
         labels = [self.ui.lab_number1, self.ui.lab_number2, self.ui.lab_number3]
 
-        # top 3 categories
+        # Wyświetlanie top 3 kategorii
         for i, (category_name, count) in enumerate(most_common_categories):
             result_text = f"{category_name} \n{count}"
             labels[i].setText(result_text)
@@ -254,15 +247,24 @@ class UIFunction(MainWindow):
         for i in range(len(most_common_categories), 3):
             labels[i].setText("")
 
-        all_categories = [value['name'] for value in waste_data.values()]
-        category_counts_with_names = {key_to_name[key]: category_counts.get(key, 0) for key in waste_data}
+        # Sortowanie danych na podstawie stanu sortowania
+        all_categories = [value['name'] for value in WASTE_DESC.values()]
+        category_counts_with_names = {key_to_name[key]: category_counts.get(key, 0) for key in WASTE_DESC}
 
-        # plot
+        if UIFunction.sort_state:
+            sorted_data = sorted(category_counts_with_names.items(), key=lambda x: x[1], reverse=True)
+        else:
+            sorted_data = sorted(category_counts_with_names.items())
+
+        all_categories = [item[0] for item in sorted_data]
+        counts = [item[1] for item in sorted_data]
+
+        # Tworzenie wykresu
         fig = go.Figure()
 
         fig.add_trace(go.Bar(
             x=all_categories,
-            y=[category_counts_with_names[category] for category in all_categories],
+            y=counts,
             hoverinfo='text',
             marker=dict(color='#2E7D32')
         ))
@@ -344,3 +346,36 @@ class UIFunction(MainWindow):
 
     def desc_view(self):
         self.ui.stackedWidget_desc.setCurrentWidget(self.ui.page_desc)
+
+    def toggle_sort_and_refresh(self):
+        try:
+            UIFunction.sort_state = not UIFunction.sort_state
+            UIFunction.stats_page(self)
+
+            if UIFunction.sort_state:
+                self.ui.bn_sort.setText("Sortuj alfabetycznie")
+            else:
+                self.ui.bn_sort.setText("Sortuj malejąco")
+
+        except Exception as e:
+            print(f"Wystąpił błąd: {e}")
+
+    def reset_data(self):
+
+        confirmation = QMessageBox.question(
+            self,
+            "Potwierdzenie",
+            "Czy na pewno chcesz zresetować dane?",
+            QMessageBox.Yes | QMessageBox.No,
+            QMessageBox.No
+        )
+
+        if confirmation == QMessageBox.Yes:
+            try:
+
+                with open("image_base.json", "w", encoding="utf-8") as file:
+                    json.dump({}, file, ensure_ascii=False, indent=4)
+                QMessageBox.information(self, "Sukces", "Dane zostały zresetowane.")
+                UIFunction.stats_page(self)
+            except Exception as e:
+                QMessageBox.critical(self, "Błąd", f"Nie udało się zresetować danych: {e}")

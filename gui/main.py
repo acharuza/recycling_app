@@ -9,18 +9,19 @@ from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton, QLabel, QWid
     QVBoxLayout
 from PyQt5.QtGui import QFont
 from ui_function import *
-from collections import Counter
-from datetime import datetime
 import random
 import json
-import os
+
 
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
         self.ui = uic.loadUi("ui_main.ui", self)
-
+        ###
+        self.ui_function = UIFunction()
+        self.ui_function.ui = self.ui
+        ###
         # Setting window title
         application_name = "Recycle App"
         self.setWindowTitle(application_name)
@@ -69,7 +70,10 @@ class MainWindow(QMainWindow):
         self.ui.bn_report.clicked.connect(lambda: UIFunction.choose_feedback(self))
         self.ui.bn_send.clicked.connect(lambda: UIFunction.send_negative_feedback(self))
         self.ui.bn_back.clicked.connect(lambda: UIFunction.desc_view(self))
-        #self.ui.bn_sort.clicked.connect(lambda: UIFunction.toggleSortMode(self))
+        self.ui.bn_sort.clicked.connect(lambda: UIFunction.toggle_sort_and_refresh(self))
+        self.ui.bn_reset.clicked.connect(lambda: UIFunction.reset_data(self))
+
+
 
 
     def mouse_press_event(self, event):
