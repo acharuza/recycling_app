@@ -146,7 +146,7 @@ class UIFunction():
             mime_type, _ = mimetypes.guess_type(self.selected_file_path)
             files = {"file": (self.selected_file_path, file, mime_type)}
             try:
-                response = requests.post(url, files=files, timeout=5)
+                response = requests.post(url, files=files, timeout=10)
                 if response.status_code == 200:
                     prediction = response.json().get("prediction")
                     return prediction
