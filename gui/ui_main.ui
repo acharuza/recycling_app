@@ -774,7 +774,7 @@ background-color: rgb(255, 255, 255);</string>
                        <string/>
                       </property>
                       <property name="pixmap">
-                       <pixmap>C:/Users/marty/Downloads/Projekt bez nazwy (1).png</pixmap>
+                       <pixmap>icons/main_photo_bins.png</pixmap>
                       </property>
                       <property name="scaledContents">
                        <bool>true</bool>
@@ -1400,7 +1400,7 @@ QPushButton:pressed {
                              </property>
                              <property name="icon">
                               <iconset>
-                               <normaloff>C:/Users/marty/Downloads/icons8-facebook-like-96 (1).png</normaloff>C:/Users/marty/Downloads/icons8-facebook-like-96 (1).png</iconset>
+                               <normaloff>icons/like.png</normaloff>icons/like.png</iconset>
                              </property>
                              <property name="iconSize">
                               <size>
@@ -1447,7 +1447,7 @@ QPushButton:pressed {
                              </property>
                              <property name="icon">
                               <iconset>
-                               <normaloff>C:/Users/marty/Downloads/icons8-exclamation-mark-64 (1).png</normaloff>C:/Users/marty/Downloads/icons8-exclamation-mark-64 (1).png</iconset>
+                               <normaloff>icons/exclamation_mark.png</normaloff>icons/exclamation_mark.png</iconset>
                              </property>
                              <property name="iconSize">
                               <size>
@@ -1689,7 +1689,7 @@ font-size: 22px;</string>
                            </property>
                            <property name="icon">
                             <iconset>
-                             <normaloff>C:/Users/marty/Downloads/icons8-back-100 (1).png</normaloff>C:/Users/marty/Downloads/icons8-back-100 (1).png</iconset>
+                             <normaloff>icons/back.png</normaloff>icons/back.png</iconset>
                            </property>
                            <property name="iconSize">
                             <size>
@@ -1709,7 +1709,7 @@ font-size: 22px;</string>
                            </property>
                            <property name="icon">
                             <iconset>
-                             <normaloff>C:/Users/marty/Downloads/icons8-tick-mark-100 (1).png</normaloff>C:/Users/marty/Downloads/icons8-tick-mark-100 (1).png</iconset>
+                             <normaloff>icons/send.png</normaloff>icons/send.png</iconset>
                            </property>
                            <property name="iconSize">
                             <size>
