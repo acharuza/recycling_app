@@ -1,5 +1,6 @@
 import sys
 import os
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 import pytest
 from PyQt5.QtWidgets import QApplication
@@ -9,9 +10,12 @@ from gui.main import MainWindow
 from gui.ui_function import UIFunction
 
 TEST_IMAGE_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "test_image.jpg"))
+
+
 @pytest.fixture(scope="module")
 def app():
     return QApplication([])
+
 
 @pytest.fixture(scope="session", autouse=True)
 def change_working_directory():
@@ -52,7 +56,6 @@ def test_analyze_photo(main_window, mocker):
     set_description_mock = mocker.patch("gui.ui_function.UIFunction.set_waste_description")
 
     main_window.ui_function.analyze_photo(prediction)
-
 
 
 def test_set_waste_description(main_window, mocker):
