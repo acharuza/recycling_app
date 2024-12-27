@@ -2,8 +2,6 @@ import json
 
 URL = "http://127.0.0.1:8000/"
 
-with open("waste_desc.json", "r", encoding="utf-8") as file:
-    WASTE_DESC = json.load(file)
 
 WASTE_DESC = {
   "paper": {
