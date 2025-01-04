@@ -287,6 +287,8 @@ class UIFunction():
 
     def waste_category(self):
         prediction = UIFunction.predict_category(self)
+        if prediction is None:
+            return
         UIFunction.analyze_photo(self, prediction)
 
     def send_feedback(self):
