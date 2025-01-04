@@ -14,6 +14,8 @@ COPY ./tests ./tests
 RUN pip install .
 
 RUN python -c "from torchvision import models; models.resnet101(weights=models.ResNet101_Weights.DEFAULT)"
+RUN python -c "from torchvision import models; models.resnet152(weights=models.ResNet152_Weights.DEFAULT)"
+RUN python -c "from torchvision import models; models.vgg19(weights=models.VGG19_Weights.DEFAULT)"
 
 RUN pytest tests 
 
