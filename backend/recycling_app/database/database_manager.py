@@ -21,6 +21,8 @@ class DatabaseManager:
         timestamp = datetime.now().strftime(TIMESTAMP_FORMAT)
         file_name = f"{uuid.uuid4()}_{label}_{timestamp}.{img_format}"
         file_path = os.path.join(self.database_path, label, file_name)
+        if not os.path.exists(os.path.join(self.database_path, label)):
+            os.makedirs(os.path.join(self.database_path, label))
         try:
             with open(file_path, "wb") as f:
                 f.write(img)
